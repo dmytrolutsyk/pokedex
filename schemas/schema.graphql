@@ -56,3 +56,26 @@ enum PokeType {
   STEEL
   FAIRY
 }
+
+enum Category {
+  PHYSIC
+  SPECIAL
+  STATUS
+}
+
+Type Capacity {
+    Id: ID
+    Type: PokeType,
+    Category: Category,
+    Power: Int,
+    Precision: Float
+    PowerPoint: Int,
+    Target: Int
+}
+
+extend type Capacity {
+  """
+  The type of the pokemon.
+  """
+  Type: Category
+}

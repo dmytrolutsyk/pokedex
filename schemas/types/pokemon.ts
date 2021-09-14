@@ -3,7 +3,8 @@ import {
     GraphQLID,
     GraphQLInt,
     GraphQLString,
-    GraphQLFloat
+    GraphQLFloat,
+    GraphQLList
   } from 'graphql';
 
   import PokeType from '../enums/PokeType';
@@ -22,8 +23,11 @@ import {
         type: GraphQLInt,
       },
       Type: {
-        type: PokeType,
-      },
+        type: new GraphQLList(PokeType),
+        resolve: obj => {
+              return obj.PokeType;
+        }
+    },
       Height: {
         type: GraphQLInt,
       },
