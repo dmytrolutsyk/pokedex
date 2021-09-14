@@ -1,9 +1,18 @@
 import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
+import * as dotenv from 'dotenv';
+
 import schema from './schemas';
 import defaultQuery from './utils/default.query';
+import { DatabaseConfig } from './utils';
+
+dotenv.config();
 
 var app = express();
+
+const db = DatabaseConfig.getInstance();
+db.connect();
+
 app.use(
   '/graphql',
   graphqlHTTP({

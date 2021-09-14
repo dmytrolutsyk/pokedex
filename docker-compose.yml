@@ -1,0 +1,49 @@
+version: "3.7"
+
+services:
+  app:
+    container_name: pokedex_api
+    build:
+      context: .
+      target: base
+      dockerfile: App.Dockerfile
+    ports: 
+      - "${APP_PORT}:4000"
+    command: yarn dev
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - db
+    user: "${CURRENT_UID:-1000}"
+
+  db:
+    container_name: pokedex_db
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "${DB_USER}"
+      MONGO_INITDB_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MONGO_INITDB_DATABASE: "${DB_NAME}"
+      ports: "${DB_PORT}:27017"
+    volumes: 
+      - ./mongodata_db:/data/db
+      - ./mongodata_configdb:/data/configdb
+    user: "${CURRENT_UID:-1000}"
+
+  mongo-express:
+    container_name: pokedex_db_interface
+    image: mongo-express:0.54.0
+    restart: always
+    ports:
+      - "${MONGO_EXPRESS_PORT}:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: "${DB_USER}"
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "${DB_PASSWORD}"
+      ME_CONFIG_MONGODB_SERVER: pokedex_db
+    depends_on: 
+      - db
+    user: "${CURRENT_UID:-1000}"
+
+volumes:
+  mongodata_db:
+  mongodata_configdb:
