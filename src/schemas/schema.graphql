@@ -1,17 +1,26 @@
 Type Pokemon {
     Id: ID
     Name: String,
-    Type: String
+    Pokenum: Int,
+    Type: [PokeType],
     Height: Int,
     Weight: Float,
-    Color : String,
-    Trainer: TrainerType,
-    Location: String,
-    WitnessType: [String], // which fucked easily by this pokemon 
-    HardType: [String], // which fuck easily this pokemon
-    Talents: [String],
-    Evolutions : [String]
+    Color: String,
+    # Trainer: TrainerType,
+    # Location: String,
+    Talents: [Talent],
+    Evolutions: [String],
+    Description: String,
+    Sprite: String
 }
+
+extend type Pokemon {
+  """
+  The type of the pokemon.
+  """
+  Type: PokeType
+}
+
 
 Type Trainer {
     Id: ID
@@ -19,14 +28,19 @@ Type Trainer {
     Type: String
     Height: Int,
     Weight: Float,
-    HairColor : string
+    HairColor : String
+}
+Type Talent {
+    Id: ID
+    Name: String,
+    Description: String
 }
 
 enum PokeType {
-  Normal
-  Fire
-  Water
-  Electric
+  NORMAL
+  FIRE
+  WATER
+  ELECTRIC
   GRASS
   ICE
   FIGHTING
