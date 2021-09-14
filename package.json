@@ -1,0 +1,30 @@
+{
+  "name": "pokedexapi",
+  "version": "1.0.0",
+  "description": "A GraphQL Pokedex API",
+  "scripts": {
+    "dev": "node-dev index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmytrolutsyk/pokedexAPI.git"
+  },
+  "author": "Sophie PELLUET",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dmytrolutsyk/pokedexAPI/issues"
+  },
+  "homepage": "https://github.com/dmytrolutsyk/pokedexAPI#readme",
+  "dependencies": {
+    "express": "4.17.1",
+    "express-graphql": "0.12.0",
+    "graphql": "15.5.3",
+    "typescript": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/express": "4.17.13",
+    "node-dev": "7.0.0",
+    "ts-node": "10.2.1"
+  }
+}
