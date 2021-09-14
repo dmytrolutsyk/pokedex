@@ -1,0 +1,44 @@
+Type Pokemon {
+    Id: ID
+    Name: String,
+    Type: String
+    Height: Int,
+    Weight: Float,
+    Color : String,
+    Trainer: TrainerType,
+    Location: String,
+    WitnessType: [String], // which fucked easily by this pokemon 
+    HardType: [String], // which fuck easily this pokemon
+    Talents: [String],
+    Evolutions : [String]
+}
+
+Type Trainer {
+    Id: ID
+    Name: String,
+    Type: String
+    Height: Int,
+    Weight: Float,
+    HairColor : string
+}
+
+enum PokeType {
+  Normal
+  Fire
+  Water
+  Electric
+  GRASS
+  ICE
+  FIGHTING
+  POISON
+  GROUND
+  FLYING
+  PSYCHIC
+  BUG
+  ROCK
+  GHOST
+  DRAGON
+  DARK
+  STEEL
+  FAIRY
+}
