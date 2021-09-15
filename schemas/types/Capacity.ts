@@ -12,28 +12,28 @@ import PokeType from '../enums/PokeType';
   export default new GraphQLObjectType({
     name: 'Capacity',
     fields: {
-      Id: {
+      id: {
         type: GraphQLID
       },
-      Name: {
+      name: {
         type: GraphQLString
       },
-      Type: {
+      type: {
         type: PokeType
       },
-      Category: {
+      category: {
         type: Category,
       },
-      Power: {
+      power: {
         type: GraphQLInt
       },
-      Precision: {
+      precision: {
         type: GraphQLFloat,
       },
-      PowerPoint: {
+      powerPoint: {
         type: GraphQLInt
       },
-      Target: {
+      target: {
         type: GraphQLInt,
       },
     }
