@@ -10,10 +10,13 @@ import Category from '../enums/Category';
 import PokeType from '../enums/PokeType';
 
   export default new GraphQLObjectType({
-    name: 'Talent',
+    name: 'Capacity',
     fields: {
       Id: {
         type: GraphQLID
+      },
+      Name: {
+        type: GraphQLString
       },
       Type: {
         type: PokeType

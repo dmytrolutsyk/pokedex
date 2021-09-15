@@ -1,17 +1,23 @@
 Type Pokemon {
-    Id: ID
+    Id: ID,
     Name: String,
     Pokenum: Int,
-    Type: [PokeType],
     Height: Int,
     Weight: Float,
     Color: String,
     # Trainer: TrainerType,
     # Location: String,
+    Catgories: [Category]
     Talents: [Talent],
-    Evolutions: [String],
     Description: String,
     Sprite: String
+}
+
+extend type Pokemon {
+  """
+  Evolutions of this pokemon.
+  """
+  Evolutions: [Pokemon]
 }
 
 extend type Pokemon {
