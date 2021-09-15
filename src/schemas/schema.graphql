@@ -42,7 +42,7 @@ Type Talent {
     Description: String
 }
 
-enum PokeType {
+enum PokemonType {
   NORMAL
   FIRE
   WATER

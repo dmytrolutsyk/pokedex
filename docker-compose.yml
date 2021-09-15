@@ -28,7 +28,7 @@ services:
     volumes: 
       - ./mongodata_db:/data/db
       - ./mongodata_configdb:/data/configdb
-    user: "${CURRENT_UID:-1000}"
+    # user: "${CURRENT_UID:-1000}"
 
   mongo-express:
     container_name: pokedex_db_interface

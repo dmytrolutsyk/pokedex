@@ -2,9 +2,9 @@ import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import * as dotenv from 'dotenv';
 
-import schema from './schemas';
-import defaultQuery from './utils/default.query';
-import { DatabaseConfig } from './utils';
+// import schema from './schemas';
+import { schema } from './schemas/types'
+import { DatabaseConfig } from './utils/config';
 
 dotenv.config();
 
@@ -18,7 +18,7 @@ app.use(
   graphqlHTTP({
     schema: schema,
     graphiql: {
-      defaultQuery
+      // defaultquery
     }
   })
 );

@@ -1,2 +1,2 @@
-export * from './database.config';
-export * as DefaultQuery from './default.query';
+export * from './config';
+export * from './errors';
