@@ -1,3 +1,6 @@
 node_modules
 mongodata*
+yarn.lock
 .vscode
+package-lock.json
+env

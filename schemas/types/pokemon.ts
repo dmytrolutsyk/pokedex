@@ -3,15 +3,18 @@ import {
     GraphQLID,
     GraphQLInt,
     GraphQLString,
-    GraphQLFloat
+    GraphQLFloat,
+    GraphQLList
   } from 'graphql';
+  import Category from '../enums/Category';
+  import Capacity from '../types/Capacity';
 
   import PokeType from '../enums/PokeType';
   import Talent from './talent';
 
-  export default new GraphQLObjectType({
+  var pokemon :GraphQLObjectType = new GraphQLObjectType({
     name: 'Pokemon',
-    fields: {
+    fields: () => ({
       Id: {
         type: GraphQLID
       },
@@ -22,8 +25,11 @@ import {
         type: GraphQLInt,
       },
       Type: {
-        type: PokeType,
-      },
+        type: new GraphQLList(PokeType),
+        resolve: obj => {
+              return obj.PokeType;
+        }
+    },
       Height: {
         type: GraphQLInt,
       },
@@ -36,11 +42,17 @@ import {
       /*Location: {
         type: GraphQLString,
       },*/
+      Category: {
+        type: Category
+      },
       Talents: {
-        type: Talent,
+        type: new GraphQLList(Talent),
+      },
+      Capacities: {
+        type: new GraphQLList(Capacity),
       },
       Evolutions: {
-        type: GraphQLString,
+        type: new GraphQLList(pokemon),
       },
       Description: {
         type: GraphQLString,
@@ -48,6 +60,8 @@ import {
       Sprite: {
         type: GraphQLString,
       }
-    }
+    })
   });
+
+  export default pokemon;
   
