@@ -7,57 +7,57 @@ import {
     GraphQLList
   } from 'graphql';
   import Category from '../enums/Category';
-  import Capacity from '../types/Capacity';
+  import Capacity from './Capacity';
 
   import PokeType from '../enums/PokeType';
-  import Talent from './talent';
+  import Talent from './Talent';
 
   var pokemon :GraphQLObjectType = new GraphQLObjectType({
     name: 'Pokemon',
     fields: () => ({
-      Id: {
+      id: {
         type: GraphQLID
       },
-      Name: {
+      name: {
         type: GraphQLString
       },
-      Pokenum: {
+      pokenum: {
         type: GraphQLInt,
       },
-      Type: {
+      type: {
         type: new GraphQLList(PokeType),
         resolve: obj => {
               return obj.PokeType;
         }
     },
-      Height: {
+      height: {
         type: GraphQLInt,
       },
-      Weight: {
+      weight: {
         type: GraphQLFloat,
       },
-      Color: {
+      color: {
         type: GraphQLString,
       },
       /*Location: {
         type: GraphQLString,
       },*/
-      Category: {
+      category: {
         type: Category
       },
-      Talents: {
+      talents: {
         type: new GraphQLList(Talent),
       },
-      Capacities: {
+      capacities: {
         type: new GraphQLList(Capacity),
       },
-      Evolutions: {
+      evolutions: {
         type: new GraphQLList(pokemon),
       },
-      Description: {
+      description: {
         type: GraphQLString,
       },
-      Sprite: {
+      sprite: {
         type: GraphQLString,
       }
     })

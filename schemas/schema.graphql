@@ -1,16 +1,16 @@
 Type Pokemon {
-    Id: ID,
-    Name: String,
-    Pokenum: Int,
-    Height: Int,
-    Weight: Float,
-    Color: String,
+    id: ID,
+    name: String,
+    pokenum: Int,
+    height: Int,
+    weight: Float,
+    color: String,
     # Trainer: TrainerType,
     # Location: String,
-    Catgories: [Category]
-    Talents: [Talent],
-    Description: String,
-    Sprite: String
+    catgories: [Category]
+    talents: [Talent],
+    description: String,
+    sprite: String
 }
 
 extend type Pokemon {
@@ -29,17 +29,17 @@ extend type Pokemon {
 
 
 Type Trainer {
-    Id: ID
-    Name: String,
-    Type: String
-    Height: Int,
-    Weight: Float,
-    HairColor : String
+    id: ID
+    name: String,
+    type: String
+    height: Int,
+    weight: Float,
+    hairColor : String
 }
 Type Talent {
-    Id: ID
-    Name: String,
-    Description: String
+    id: ID
+    name: String,
+    description: String
 }
 
 enum PokeType {
@@ -70,13 +70,13 @@ enum Category {
 }
 
 Type Capacity {
-    Id: ID
-    Type: PokeType,
-    Category: Category,
-    Power: Int,
-    Precision: Float
-    PowerPoint: Int,
-    Target: Int
+    id: ID
+    type: PokeType,
+    category: Category,
+    power: Int,
+    precision: Float
+    powerPoint: Int,
+    target: Int
 }
 
 extend type Capacity {
