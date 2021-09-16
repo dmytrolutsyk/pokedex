@@ -8,10 +8,10 @@ export interface IPokemon {
     height?: Number,
     weight?: Number,
     color?: String,
-    // Trainer: TrainerType,
-    // Location: String,
-    // Talents: [Talent],
-    // Evolutions: [String],
-    // Description: String,
-    // Sprite: String
+    sprite?: String
+    // trainer: TrainerType,
+    // location: String,
+    // talents: [Talent],
+    // evolutions: [String],
+    // description: String,
 }
