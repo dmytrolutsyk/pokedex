@@ -5,6 +5,9 @@ import  PokemonGraph from './pokemon.graph.type';
 import { PokemonServices } from '../../services';
 import { BaseError } from '../../utils';
 
+import  Mutation from './mutation';
+
+
 
 const pokemonServices = new PokemonServices();
 
@@ -54,54 +57,32 @@ export const queryType = new GraphQLObjectType({
         }     
         
       }
+     },
+     insertPokemon: {
+      type: PokemonGraph,
+      description: 'Insert a Pokemon in db.',
+      
+      /*try {
+        const pokemonServices = new PokemonServices();
+        const pokemon: IPokemon = { 
+            name: 'Dracaufeu',
+            pokenum: 6,
+            height: 170,
+            weight: 90.5,
+            color: 'Orange',
+            type: [PokemonType.FIRE, PokemonType.FLYING],
+            sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"
+        };
+        const insert = await pokemonServices.insert(pokemon);
+        console.log({ insert });
+    }
+    catch (error) {
+        console.error(error);
+    }*/
      }
   }
 });
 
-const getPokemonById = mutationWithClientMutationId({
-  name: 'getPokemonById',
-  description: 'Returns a Pokemon',
-  inputFields: {
-    id: {
-      type: GraphQLNonNull(GraphQLID),
-    },
-  },
-  outputFields: {
-    pokemon: {
-      type: PokemonGraph,
-    },
-  },
-  mutateAndGetPayload: (input, context) => {
-    console.log(
-      'Mutation.addLike called with input: ' + JSON.stringify(input, null, 2)
-    );
-    const { id } = input;
-    console.log(`pokemon id: ${id}`);
-    return {
-      id
-    };
-    // const { likableId } = input;
-    // const likable = likables.find((l) => l.id === likableId);
-    // if (!likable) return { likable: null };
-    // likable.likesCount = likable.likesCount + 1;
-    // return {
-    //   likable,
-    // };
 
-  },
-});
-
-/**
- *  type Mutation {
- *    addLike(input: AddLikeInput!): AddLikePayload
- *  }
- */
-const mutationType = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: {
-    data: getPokemonById,
-  },
-});
-
-export const schema = new GraphQLSchema({ query: queryType, mutation: mutationType });
+export const schema = new GraphQLSchema({ query: queryType, mutation: Mutation });
 
