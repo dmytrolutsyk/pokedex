@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
-import { PokemonTypeGraph } from '../../schemas/enums';
-import { PokemonGraph } from '../../schemas/types';
+
 import { PokemonServices } from '../../services';
+import { IPokemon } from '../../interfaces';
+import { PokemonType } from '../../enum';
 
 export class DatabaseConfig {
     
@@ -48,13 +49,14 @@ export class DatabaseConfig {
     public async initiate() {
         try {
             const pokemonServices = new PokemonServices();
-            const pokemon = { 
-                Name: 'dracaufeu',
-                Pokenum: 6,
-                Height: 1.7,
-                Weight: 90.5,
-                Color: 'Orange'
-            }
+            const pokemon: IPokemon = { 
+                name: 'Dracaufeu',
+                pokenum: 6,
+                height: 170,
+                weight: 90.5,
+                color: 'Orange',
+                type: [PokemonType.FIRE, PokemonType.FLYING]
+            };
             const insert = await pokemonServices.insert(pokemon);
             console.log({ insert });
         }

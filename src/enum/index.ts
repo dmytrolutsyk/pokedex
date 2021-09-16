@@ -1,1 +1,2 @@
-export * from './poke.type.enum';
+export * from './poke.types.enum';
+export * from './ability.types.enum';

@@ -1,5 +1,5 @@
 Type Pokemon {
-    id: ID,
+    _id: ID,
     name: String,
     pokenum: Int,
     height: Int,
@@ -7,7 +7,7 @@ Type Pokemon {
     color: String,
     # Trainer: TrainerType,
     # Location: String,
-    catgories: [Category]
+    species: [Species]
     talents: [Talent],
     description: String,
     sprite: String
@@ -29,7 +29,7 @@ extend type Pokemon {
 
 
 Type Trainer {
-    id: ID
+    _id: ID
     name: String,
     type: String
     height: Int,
@@ -37,7 +37,7 @@ Type Trainer {
     hairColor : String
 }
 Type Talent {
-    id: ID
+    _id: ID
     name: String,
     description: String
 }
@@ -63,25 +63,25 @@ enum PokemonType {
   FAIRY
 }
 
-enum Category {
+enum AbilityType {
   PHYSIC
   SPECIAL
   STATUS
 }
 
-Type Capacity {
+Type Ability {
     id: ID
     type: PokeType,
-    category: Category,
+    ability: AbilityType,
     power: Int,
     precision: Float
     powerPoint: Int,
     target: Int
 }
 
-extend type Capacity {
+extend type Ability {
   """
-  The type of the pokemon.
+  The type of the ability.
   """
-  Type: Category
+  Type: PokeType
 }

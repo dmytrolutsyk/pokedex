@@ -1,8 +1,8 @@
 import { GraphQLEnumType } from 'graphql';
 
 export default new GraphQLEnumType({
-  name: 'Category',
-  description: 'The different criteria according to each one has a category, and these different criteria which vary according to the generations..',
+  name: 'AbilityType',
+  description: 'The different criteria according to each one has a abilit, and these different criteria which vary according to the generations..',
   values: {
     PHYSIC: {
       value: 'PHYSIC'

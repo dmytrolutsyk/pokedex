@@ -3,8 +3,6 @@ import { Document, Model, Types } from 'mongoose';
 
 import { APIError, BaseError, Result } from '../utils';
 import { PokemonSchema, PokemonModel, IPokemonDocument } from '../models/pokemon.model';
-import { PokemonGraph } from '../schemas/types';
-import { IPokemon } from '../interfaces';
 
 export class PokemonServices {
     private readonly name = 'PokemonServices';

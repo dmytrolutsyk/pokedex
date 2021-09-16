@@ -1,11 +1,13 @@
+import { PokemonType } from '../enum';
+
 export interface IPokemon {
-    Id?: String,
-    Name?: String,
-    Pokenum?: Number,
-    // Type: [PokeType],
-    // Height: Number,
-    // Weight: Number,
-    // Color: String,
+    _id?: String,
+    name?: String,
+    pokenum?: Number,
+    type?: PokemonType[],
+    height?: Number,
+    weight?: Number,
+    color?: String,
     // Trainer: TrainerType,
     // Location: String,
     // Talents: [Talent],

@@ -3,50 +3,65 @@ import {
     GraphQLID,
     GraphQLInt,
     GraphQLString,
-    GraphQLFloat
+    GraphQLFloat,
+    GraphQLList
   } from 'graphql';
 
-import { PokemonTypeGraph } from '../enums';
-import { TalentGraph } from '.';
+import PokemonTypeGraph from '../enums/pokemon.type.graph.enum'
+import AbilityGraph from './ability.graph.type';
+import TalentGraph from './talent.graph.type';
 
-export const PokemonGraph = new GraphQLObjectType({
+
+let PokemonGraph :GraphQLObjectType = new GraphQLObjectType({
   name: 'Pokemon',
-  fields: {
-    Id: {
+  fields: () => ({
+    _id: {
       type: GraphQLID
     },
-    Name: {
+    name: {
       type: GraphQLString
     },
-    Pokenum: {
+    pokenum: {
       type: GraphQLInt,
     },
-    // Type: {
-    //   type: PokemonTypeGraph
-    // },
-    Height: {
+    type: {
+      // type: new GraphQLList(PokemonTypeGraph),
+      // resolve: obj => {
+      //       return obj.PokeType;
+      // }
+      type: new GraphQLList(PokemonTypeGraph),
+      resolve: obj => {
+          return obj.type;
+      }
+    },
+    height: {
       type: GraphQLInt,
     },
-    Weight: {
+    weight: {
       type: GraphQLFloat,
     },
-    Color: {
+    color: {
       type: GraphQLString,
     },
     /*Location: {
       type: GraphQLString,
     },*/
-    // Talents: {
-    //   type: TalentGraph,
-    // },
-    // Evolutions: {
-    //   type: GraphQLString,
-    // },
-    // Description: {
-    //   type: GraphQLString,
-    // },
-    // Sprite: {
-    //   type: GraphQLString,
-    // }
-  }
+    talents: {
+      type: new GraphQLList(TalentGraph),
+    },
+    abilities: {
+      type: new GraphQLList(AbilityGraph),
+    },
+    evolutions: {
+      type: new GraphQLList(PokemonGraph),
+    },
+    description: {
+      type: GraphQLString,
+    },
+    sprite: {
+      type: GraphQLString,
+    }
+  })
 });
+
+export default PokemonGraph;

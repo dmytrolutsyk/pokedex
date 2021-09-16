@@ -1,26 +1,64 @@
 /** Modèle pour la classe Pokemon */
 
 import { model, Schema, Document } from 'mongoose';
-import { PokeType } from '../enum';
-import { PokemonGraph } from '../schemas/types';
+
 import { IPokemon } from '../interfaces';
+import { PokemonType } from '../enum';
 
 export type IPokemonDocument = IPokemon & Document;
 
 export const PokemonSchema = new Schema({
-    Name: {
+    name: {
         type: String,
         required: true,
     },
-    // Pokenum: {
-    //     type: Number,
-    //     required: true
-    // },
-    // Type: {
-    //     type: String,
-    //     enum: Object.values(PokeType),
-    //     required: true,
-    // },
+    pokenum: {
+        type: Number,
+        required: true
+    },
+    type: {
+        type: [String],
+        enum: Object.values(PokemonType),
+        required: true,
+    },
+    height: {
+        type: Number,
+        required: false,
+    },
+    weight: {
+        type: Number,
+        required: false
+    },
+    color: {
+        type: String, 
+        required: false
+    },
+    talents: {
+        type: [String],
+        required: false,
+        default: []
+    },
+    abilities: {
+        type: [String],
+        required: false,
+        default: []
+    },
+    evolutions: {
+        type: [String],
+        required: false,
+        default: []
+    }, 
+    description: {
+        type: String,
+        required: false
+    }, 
+    sprite: {
+        type: String,
+        required: false
+    },
+    species: {
+        type: String, 
+    }
 }, {
     versionKey: false,
     timestamps: true

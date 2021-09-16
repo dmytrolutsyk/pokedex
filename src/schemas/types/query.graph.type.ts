@@ -1,7 +1,7 @@
 import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
-import { PokemonGraph } from '.';
+import  PokemonGraph from './pokemon.graph.type';
 import { PokemonServices } from '../../services';
 import { BaseError } from '../../utils';
 

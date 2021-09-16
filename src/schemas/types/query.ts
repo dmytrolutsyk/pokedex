@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql';
 
-import Pokemon from './Pokemon';
-import {ivysaur, bulbasaur } from '../../utils/fakeDatabase';
+import PokemonGraph from './pokemon.graph.type';
+import {ivysaur, bulbasaur } from '../../utils/config/database.fake';
 export default new GraphQLObjectType({
   name: 'Query',
   fields: {
@@ -10,11 +10,11 @@ export default new GraphQLObjectType({
       resolve: () => "hello world !"
     },
     poke1: {
-      type: Pokemon,
+      type: PokemonGraph,
       resolve: () => bulbasaur
     },
     poke2: {
-      type: Pokemon,
+      type: PokemonGraph,
       resolve: () => ivysaur
     }
   }

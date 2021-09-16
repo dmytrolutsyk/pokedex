@@ -1,2 +1,2 @@
-import PokemonTypeGraph from './pokemon.type.graph.enum';
-export { PokemonTypeGraph };
+export * from './pokemon.type.graph.enum';
+export * from './ability.types.graph.enum'
