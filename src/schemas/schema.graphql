@@ -145,31 +145,9 @@ input AbilityInput {
     name: String
     description: String,
     type: PokemonInput,
-    abilityType
-
-    
+    abilityType: AbilityTypeGraph,
+    power: Int,
+    precision: Float,
+    powerPoint: Int,
+    target: Int
 }
-d: {
-      type: GraphQLID
-    },
-    name: {
-      type: GraphQLString
-    },
-    type: {
-      type: PokemonTypeGraph
-    },
-    abilityType: {
-      type: AbilityTypeGraph,
-    },
-    power: {
-      type: GraphQLInt
-    },
-    precision: {
-      type: GraphQLFloat,
-    },
-    powerPoint: {
-      type: GraphQLInt
-    },
-    target: {
-      type: GraphQLInt,
-    },

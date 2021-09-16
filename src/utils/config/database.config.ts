@@ -56,6 +56,9 @@ export class DatabaseConfig {
                 weight: 90.5,
                 color: 'Orange',
                 type: [PokemonType.FIRE, PokemonType.FLYING],
+                talents: [],
+                evolutions: [],
+                description: "",
                 sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"
             };
             const insert = await pokemonServices.insert(pokemon);

@@ -1,4 +1,5 @@
 import { PokemonType } from '../enum';
+import Talent from '../schemas/types/talent.graph.type'
 
 export interface IPokemon {
     _id?: String,
@@ -8,10 +9,10 @@ export interface IPokemon {
     height?: Number,
     weight?: Number,
     color?: String,
-    sprite?: String
+    sprite?: String,
     // trainer: TrainerType,
     // location: String,
-    // talents: [Talent],
-    // evolutions: [String],
-    // description: String,
+     talents?: String[],
+     evolutions?: String[],
+     description?: String,
 }

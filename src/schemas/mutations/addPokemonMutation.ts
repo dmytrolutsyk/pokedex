@@ -68,12 +68,12 @@ const addPokemonMutation = mutationWithClientMutationId({
         const pokemonServices = new PokemonServices();
         const pokemon: IPokemon = { 
             name: input.name,
-            pokenum: 6,
-            height: 170,
-            weight: 90.5,
-            color: 'Orange',
-            type: [PokemonType.FIRE, PokemonType.FLYING],
-            sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"
+            pokenum: input.pokenum,
+            height: input.height,
+            weight: input.weight,
+            color: input.color,
+            type: input.type, //[PokemonType.FIRE, PokemonType.FLYING],
+            sprite: input.sprite //"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"
         };
         const insert = await pokemonServices.insert(pokemon);
         console.log({ insert });

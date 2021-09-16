@@ -61,24 +61,6 @@ export const queryType = new GraphQLObjectType({
      insertPokemon: {
       type: PokemonGraph,
       description: 'Insert a Pokemon in db.',
-      
-      /*try {
-        const pokemonServices = new PokemonServices();
-        const pokemon: IPokemon = { 
-            name: 'Dracaufeu',
-            pokenum: 6,
-            height: 170,
-            weight: 90.5,
-            color: 'Orange',
-            type: [PokemonType.FIRE, PokemonType.FLYING],
-            sprite: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"
-        };
-        const insert = await pokemonServices.insert(pokemon);
-        console.log({ insert });
-    }
-    catch (error) {
-        console.error(error);
-    }*/
      }
   }
 });
