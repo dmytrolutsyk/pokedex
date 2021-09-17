@@ -1,5 +1,6 @@
 import {
     GraphQLObjectType,
+    GraphQLInputObjectType,
     GraphQLID,
     GraphQLInt,
     GraphQLString,
@@ -7,14 +8,14 @@ import {
     GraphQLList
   } from 'graphql';
 import PokemonTypeGraph from '../enums/pokemon.type.graph.enum'
-import AbilityGraph from '../types/ability.graph.type';
-import TalentGraph from '../types/talent.graph.type';
+import AbilityInput from '../inputs/ability.input';
 import PokemonGraph from '../types/pokemon.graph.type';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { PokemonServices } from '../../services';
-import { IPokemon } from '../../interfaces';
+import  {IPokemon} from '../../interfaces';
 import { PokemonType } from '../../enum';
-
+import TalentInput  from '../inputs/talent.input';
+import PokemonInput from '../inputs/pokemon.input'
 
 const addPokemonMutation = mutationWithClientMutationId({
     name: 'AddPokemon',
@@ -41,15 +42,15 @@ const addPokemonMutation = mutationWithClientMutationId({
            color: {
              type: GraphQLString,
            },
-        //   talents: {
-        //     type: new GraphQLList(TalentInput),
-        //   },
-        //   abilities: {
-        //     type: new GraphQLList(AbilityGraph),
-        //   },
-        //   evolutions: {
-        //     type: new GraphQLList(PokemonGraph),
-        //   },
+           talents: {
+             type: new GraphQLList(TalentInput),
+           },
+           abilities: {
+             type: new GraphQLList(AbilityInput),
+           },
+           evolutions: {
+             type: new GraphQLList(PokemonInput),
+           },
            description: {
              type: GraphQLString,
            },
@@ -73,6 +74,10 @@ const addPokemonMutation = mutationWithClientMutationId({
             weight: input.weight,
             color: input.color,
             type: input.type, //[PokemonType.FIRE, PokemonType.FLYING],
+            description: input.description,
+            talents: input.talents,
+            evolutions: input.evolutions,
+            abilities: input.abilities,
             sprite: input.sprite //"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"
         };
         const insert = await pokemonServices.insert(pokemon);
