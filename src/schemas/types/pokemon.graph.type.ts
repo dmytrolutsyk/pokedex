@@ -6,10 +6,13 @@ import {
     GraphQLFloat,
     GraphQLList
   } from 'graphql';
+import { PokeapiServices } from '../../services';
 
 import PokemonTypeGraph from '../enums/pokemon.type.graph.enum'
 import AbilityGraph from './ability.graph.type';
 import TalentGraph from './talent.graph.type';
+
+const pokeapiServices = new PokeapiServices();
 
 
 let PokemonGraph :GraphQLObjectType = new GraphQLObjectType({
@@ -19,7 +22,13 @@ let PokemonGraph :GraphQLObjectType = new GraphQLObjectType({
       type: GraphQLID
     },
     name: {
-      type: GraphQLString
+      type: GraphQLString,
+      resolve: async (obj) => {
+        if (obj?.name != null) return obj.name;
+        const fetch = await pokeapiServices.pokemonName(obj?.pokenum);
+        if (fetch.error) return null
+        return fetch.message
+      }
     },
     pokenum: {
       type: GraphQLInt,

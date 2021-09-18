@@ -88,14 +88,13 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
         try {
             const json = `{"${field}": "${value}"}`;
             let object = await this.getModel().findOne(JSON.parse(json)) as Type;
-            if(!object) throw new Error('BAD REQUEST : Object not found');
-
+            // if(!object) throw new Error('BAD REQUEST : Object not found');
+            console.log({ object });
             // object = await this.populate(object);
-            const resultError = new APIError('DB_FETCH_ERROR');
-            result = new Result<Type>(resultError as BaseError, true);
+            result = new Result<Type>(object);
         }
         catch(error) {
-            // console.error(`${log} :`, error);
+            console.error(`${log} :`, error);
             const resultError = new APIError('DB_FETCH_ERROR');
             result = new Result<Type>(resultError as BaseError, true);
         }
@@ -116,7 +115,7 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
             result = new Result<Type>(object);
         } 
         catch(error) {
-            // console.error(`${log} :`, error);
+            console.error(`${log} :`, error);
             const resultError = new APIError('DB_INSERT_ERROR');
             result = new Result<Type>(resultError as BaseError, true);
         }

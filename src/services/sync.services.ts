@@ -2,6 +2,7 @@ import { PokemonServices, TalentServices, PokeapiServices } from '.';
 import { APIError, BaseError, Result } from '../utils';
 import { IPokemonDocument, ITalentDocument } from '../models';
 import { IPokemon, ITalent } from '../interfaces';
+import { createPrinter } from 'typescript';
 
 
 export class SyncServices {
@@ -66,14 +67,19 @@ export class SyncServices {
         return result;
     }
 
-    public async syncPokemon(id: number): Promise<Result<IPokemonDocument>> {
+    public async syncPokemon(pokenum: number): Promise<Result<IPokemonDocument>> {
         const log = `${this.name} :: syncPokemon`;
-        console.log(`${log} :: id = `, id);
+        console.log(`${log} :: pokenum = `, pokenum);
 
         let result: Result<IPokemonDocument>;
         try {
-            const fetch = await this.pokeapiServices.pokemon(id);
+            const fetch = await this.pokeapiServices.pokemon(pokenum);
             if (fetch.error) throw new Error(((fetch.message) as BaseError).name);
+            const pokemon = fetch.message as IPokemonDocument;
+
+            const fetchName = await this.pokeapiServices.pokemonName(pokenum);
+            if (fetchName.error) throw new Error(((fetchName.message) as BaseError).name);
+            pokemon.name = fetchName.message as String;
 
             const insert = await this.pokemonServices.insert(fetch.message as ITalent);
             if (insert.error) throw new Error(((fetch.message) as BaseError).name);
@@ -92,17 +98,12 @@ export class SyncServices {
 
         try {
             const pokemons: IPokemonDocument[] = [];
-            for (let i = min; i <= max; i++) {
-                let sync = await this.syncPokemon(i);
-                if (sync.error) {
-                    // handle error
-                    // return null;
-                }
-                else {
-                    const pokemon = sync.message as IPokemonDocument
-                    // console.log({ talent });
-                    pokemons.push(pokemon);
-                }
+            for (let id = min; id <= max; id++) {
+                const sync = await this.syncPokemon(id);
+                if (sync.error) continue;
+                
+                const pokemon = sync.message as IPokemonDocument
+                pokemons.push(pokemon);
             }
             result =  new Result<IPokemonDocument[]>(pokemons);
             

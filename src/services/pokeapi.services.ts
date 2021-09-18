@@ -11,7 +11,7 @@ export class PokeapiServices {
     constructor(){
         this.pokemon = this.pokemon.bind(this);
         this.pokemonName = this.pokemonName.bind(this);
-        
+
         this.talent = this.talent.bind(this);
         this.talents = this.talents.bind(this);
     };
@@ -31,7 +31,7 @@ export class PokeapiServices {
             result = new Result<String>(name);
         }
         catch(error) {
-            console.error(`${log}: `, error);
+            // console.error(`${log}: `, error);
             const resultError = new APIError('POKEAPI_FETCH_ERROR');
             result = new Result<String>(resultError as BaseError, true);
         }
@@ -66,13 +66,12 @@ export class PokeapiServices {
             result = new Result<IPokemon>(pokemon);
         }
         catch(error) {
-            console.error(`${log}: `, error);
+            // console.error(`${log}: `, error);
             const resultError = new APIError('POKEAPI_FETCH_ERROR');
             result = new Result<IPokemon>(resultError as BaseError, true);
         }
         return result;
     }
-
 
     public async talents(): Promise<Result<ITalent[]>> {
         const log = `${this.name} :: talents`; 
@@ -99,7 +98,7 @@ export class PokeapiServices {
             result = new Result<ITalent[]>(talents);
         }
         catch(error) {
-            console.error(`${log}: `, error);
+            // console.error(`${log}: `, error);
             const resultError = new APIError('POKEAPI_FETCH_ERROR');
             result = new Result<ITalent[]>(resultError as BaseError, true);
         }
@@ -124,7 +123,7 @@ export class PokeapiServices {
             result = new Result<ITalent>(talent);
         }
         catch(error) {
-            console.error(`${log}: `, error);
+            // console.error(`${log}: `, error);
             const resultError = new APIError('POKEAPI_FETCH_ERROR');
             result = new Result<ITalent>(resultError as BaseError, true);
         }

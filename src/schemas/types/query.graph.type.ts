@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
 import  PokemonGraph from './pokemon.graph.type';
@@ -48,8 +48,17 @@ export const queryType = new GraphQLObjectType({
     },
     fetchPokemon: {
       type: PokemonGraph,
-      resolve: async () => {
-        const found = await pokeapiServices.pokemon(6);
+      args: {
+        id: {
+          type: GraphQLID,
+          description: 'The ID of a `Pokemon`.',
+        }
+      },
+      resolve: async (obj, args) => {
+        const { id } = args;
+        if (!id) return null;
+
+        const found = await pokeapiServices.pokemon(args.id);
         if (found.error) { 
           // handle error
         }
@@ -58,16 +67,6 @@ export const queryType = new GraphQLObjectType({
       },
       
     },
-    // fetchTalents: {
-    //   type: GraphQLList(GraphQLNonNull(TalentGraph)),
-    //   resolve: async () => {
-    //     const fetch = await pokeapiServices.talents();
-    //     if (fetch.error) { 
-    //       // handle error
-    //     }
-    //     return fetch.message;
-    //   }
-    // },
     fetchTalent: {
       type: TalentGraph,
       resolve: async () => {
@@ -80,62 +79,60 @@ export const queryType = new GraphQLObjectType({
     },
     syncTalents: {
       type: GraphQLList(GraphQLNonNull(TalentGraph)),
-      resolve: async () => {
-        const sync = await syncServices.syncTalents(204, 207);
+      resolve: async (obj, args) => {
+        const { min, max } = args;
+        if (!min || !max) return null;
+
+        const sync = await syncServices.syncTalents(min, max);
         return sync.message;
       }
     },
     syncPokemons: {
       type: GraphQLList(GraphQLNonNull(PokemonGraph)),
-      resolve: async () => {
-        const sync = await syncServices.syncPokemons(3, 6);
+      args: {
+        min: { type: GraphQLInt },
+        max: { type: GraphQLInt }
+      },
+      resolve: async (obj, args) => {
+        const { min, max } = args;
+        if (!min || !max) return null;
+
+        const sync = await syncServices.syncPokemons(min, max);
         return sync.message;
       }
     },
     fetchPkmnName: {
       type: GraphQLString,
-      resolve: async () => {
-        const fetch = await pokeapiServices.pokemonName(6);
+      args: {
+        id: {
+          type: GraphQLID,
+          description: 'The ID of a `Pokemon`.',
+        }
+      },
+      resolve: async (obj, args) => {
+        const { id } = args;
+        if (!id) return null;
+
+        const fetch = await pokeapiServices.pokemonName(id);
         return fetch.message;
       }
-    }
-    // pokemon: {
-    //   type: PokemonGraph,
-    //   description: 'Find a Pokemon with its Id',
-    //   resolve: async(obj, { input }) => {
-    //     const { Id } = input;
-    //     const found = await pokemonServices.getById(Id);
-    //     if (found.error) { 
-    //       // handle error
-    //     }
-    //     const pokemon = found.message;
-    //     return pokemon;
-    //   }
-    // }
-    ,
+    }    ,
     pokemon: {
        type: PokemonGraph,
        description: 'Find a Pokemon with its Id',
        args: {
         id: {
           type: GraphQLID,
-          description: 'The ID of a `Human`.',
+          description: 'The ID of a `Pokemon`.',
         }
       },
        resolve: async(obj, args) => {
-        
         if (!args.id) {
           return null
         } else {
-          const Id  = args.id;
-          console.log(
-            'Pokemon got by id: ' + args.id
-          );
-          const found = await pokemonServices.getById(Id);
+          const id  = args.id;
+          const found = await pokemonServices.getByField("pokenum", id);
           const pokemon = found.message;
-        console.log(
-         'Pokemon got by id: ' + found.message
-       );
         return pokemon;
         }     
         
