@@ -25,10 +25,6 @@ let PokemonGraph :GraphQLObjectType = new GraphQLObjectType({
       type: GraphQLInt,
     },
     type: {
-      // type: new GraphQLList(PokemonTypeGraph),
-      // resolve: obj => {
-      //       return obj.PokeType;
-      // }
       type: new GraphQLList(PokemonTypeGraph),
       resolve: obj => {
           return obj.type;
@@ -59,6 +55,9 @@ let PokemonGraph :GraphQLObjectType = new GraphQLObjectType({
       type: GraphQLString,
     },
     sprite: {
+      type: GraphQLString,
+    },
+    species: {
       type: GraphQLString,
     }
   })

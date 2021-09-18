@@ -2,11 +2,14 @@ import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchem
 import { mutationWithClientMutationId } from 'graphql-relay';
 
 import  PokemonGraph from './pokemon.graph.type';
-import { PokemonServices } from '../../services';
-import { BaseError } from '../../utils';
-
+import TalentGraph from './talent.graph.type';
+import { PokemonServices, PokeapiServices, TalentServices, SyncServices,  } from '../../services';
 
 const pokemonServices = new PokemonServices();
+const pokeapiServices = new PokeapiServices();
+const talentServices = new TalentServices();
+const syncServices = new SyncServices();
+
 
 export const queryType = new GraphQLObjectType({
   name: 'Query',
@@ -27,6 +30,71 @@ export const queryType = new GraphQLObjectType({
         return pokemons;
       }
     },
+    talents: {
+      type: new GraphQLList(GraphQLNonNull(TalentGraph)),
+      description: 'Get all Talents ',
+      resolve: async ()  => {
+        const found = await talentServices.getAll();
+        if (found.error) { 
+          // handle error
+        }
+        const talents = found.message;
+        return talents;
+      }
+    },
+    fetchPokemon: {
+      type: PokemonGraph,
+      resolve: async () => {
+        const found = await pokeapiServices.pokemon(6);
+        if (found.error) { 
+          // handle error
+        }
+        const pokemon = found.message;
+        return found.message;
+      },
+      
+    },
+    // fetchTalents: {
+    //   type: GraphQLList(GraphQLNonNull(TalentGraph)),
+    //   resolve: async () => {
+    //     const fetch = await pokeapiServices.talents();
+    //     if (fetch.error) { 
+    //       // handle error
+    //     }
+    //     return fetch.message;
+    //   }
+    // },
+    fetchTalent: {
+      type: TalentGraph,
+      resolve: async () => {
+        const found = await pokeapiServices.talent(1);
+        if (found.error) { 
+          // handle error
+        }
+        return found.message;
+      }
+    },
+    syncTalents: {
+      type: GraphQLList(GraphQLNonNull(TalentGraph)),
+      resolve: async () => {
+        const sync = await syncServices.syncTalents(204, 207);
+        return sync.message;
+      }
+    },
+    syncPokemons: {
+      type: GraphQLList(GraphQLNonNull(PokemonGraph)),
+      resolve: async () => {
+        const sync = await syncServices.syncPokemons(3, 6);
+        return sync.message;
+      }
+    },
+    fetchPkmnName: {
+      type: GraphQLString,
+      resolve: async () => {
+        const fetch = await pokeapiServices.pokemonName(6);
+        return fetch.message;
+      }
+    }
     // pokemon: {
     //   type: PokemonGraph,
     //   description: 'Find a Pokemon with its Id',

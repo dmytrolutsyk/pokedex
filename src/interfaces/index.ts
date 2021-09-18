@@ -1,1 +1,2 @@
-export * from './pokemon.interfaces';
+export * from './pokemon.interface';
+export * from './talent.interface';

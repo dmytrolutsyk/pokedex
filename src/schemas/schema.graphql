@@ -7,7 +7,7 @@ Type Pokemon {
     color: String,
     # Trainer: TrainerType,
     # Location: String,
-    species: [Species]
+    species: [String]
     talents: [Talent],
     description: String,
     sprite: String

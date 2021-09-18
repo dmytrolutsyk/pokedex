@@ -28,7 +28,6 @@ export class DatabaseConfig {
         const pokemonServices = new PokemonServices();
 
         try {
-            console.log(`mongodb://${this.username}:${this.password}@pokedex_db`);
             await mongoose.connect(`mongodb://${this.username}:${this.password}@pokedex_db`, { 
                 useNewUrlParser: true, 
                 useUnifiedTopology: true }
@@ -58,7 +57,6 @@ export class DatabaseConfig {
                 type: [PokemonType.FIRE, PokemonType.FLYING]
             };
             const insert = await pokemonServices.insert(pokemon);
-            console.log({ insert });
         }
         catch (error) {
             console.error(error);

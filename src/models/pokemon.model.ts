@@ -11,10 +11,12 @@ export const PokemonSchema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
     },
     pokenum: {
         type: Number,
-        required: true
+        required: true,
+        unique: true,
     },
     type: {
         type: [String],
@@ -57,7 +59,8 @@ export const PokemonSchema = new Schema({
         required: false
     },
     species: {
-        type: String, 
+        type: String,
+        required: false
     }
 }, {
     versionKey: false,
