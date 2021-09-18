@@ -5,6 +5,10 @@ import  PokemonGraph from './pokemon.graph.type';
 import TalentGraph from './talent.graph.type';
 import { PokemonServices, PokeapiServices, TalentServices, SyncServices,  } from '../../services';
 
+import  Mutation from './mutation';
+
+
+
 const pokemonServices = new PokemonServices();
 const pokeapiServices = new PokeapiServices();
 const talentServices = new TalentServices();
@@ -136,54 +140,14 @@ export const queryType = new GraphQLObjectType({
         }     
         
       }
+     },
+     insertPokemon: {
+      type: PokemonGraph,
+      description: 'Insert a Pokemon in db.',
      }
   }
 });
 
-const getPokemonById = mutationWithClientMutationId({
-  name: 'getPokemonById',
-  description: 'Returns a Pokemon',
-  inputFields: {
-    id: {
-      type: GraphQLNonNull(GraphQLID),
-    },
-  },
-  outputFields: {
-    pokemon: {
-      type: PokemonGraph,
-    },
-  },
-  mutateAndGetPayload: (input, context) => {
-    console.log(
-      'Mutation.addLike called with input: ' + JSON.stringify(input, null, 2)
-    );
-    const { id } = input;
-    console.log(`pokemon id: ${id}`);
-    return {
-      id
-    };
-    // const { likableId } = input;
-    // const likable = likables.find((l) => l.id === likableId);
-    // if (!likable) return { likable: null };
-    // likable.likesCount = likable.likesCount + 1;
-    // return {
-    //   likable,
-    // };
 
-  },
-});
-
-/**
- *  type Mutation {
- *    addLike(input: AddLikeInput!): AddLikePayload
- *  }
- */
-const mutationType = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: {
-    data: getPokemonById,
-  },
-});
-
-export const schema = new GraphQLSchema({ query: queryType, mutation: mutationType });
+export const schema = new GraphQLSchema({ query: queryType, mutation: Mutation });
 

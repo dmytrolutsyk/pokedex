@@ -85,3 +85,69 @@ extend type Ability {
   """
   Type: PokeType
 }
+
+
+type Mutation {
+  """
+  Creates a new pokemon.
+  """
+  createPokemon(_id: ID,
+    name: String!,
+    pokenum: Int,
+    height: Int,
+    weight: Float,
+    color: String,
+    species: [Species],
+    talents: [Talent],
+    description: String,
+    sprite: String): Pokemon
+}
+
+extend type Mutation {
+  """
+  Update an existing pokemon.
+  """
+  updatePokemon(_id: ID,
+    name: String!,
+    pokenum: Int,
+    height: Int,
+    weight: Float,
+    color: String,
+    species: [Species],
+    talents: [Talent],
+    description: String,
+    sprite: String): Pokemon
+}
+
+input PokemonInput {
+    _id: ID,
+    name: String!
+    ipokenum: Int,
+    height: Int,
+    weight: Float,
+    color: String,
+    species: [Species],
+    talents: [Talent],
+    description: String,
+    sprite: String
+}
+
+
+input TalentInput {
+    _id: ID,
+    name: String
+    description: String,
+    
+}
+
+input AbilityInput {
+    _id: ID,
+    name: String
+    description: String,
+    type: PokemonInput,
+    abilityType: AbilityTypeGraph,
+    power: Int,
+    precision: Float,
+    powerPoint: Int,
+    target: Int
+}
