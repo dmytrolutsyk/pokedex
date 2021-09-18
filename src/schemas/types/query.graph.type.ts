@@ -108,6 +108,35 @@ export const queryType = new GraphQLObjectType({
     //     return pokemon;
     //   }
     // }
+    ,
+    pokemon: {
+       type: PokemonGraph,
+       description: 'Find a Pokemon with its Id',
+       args: {
+        id: {
+          type: GraphQLID,
+          description: 'The ID of a `Human`.',
+        }
+      },
+       resolve: async(obj, args) => {
+        
+        if (!args.id) {
+          return null
+        } else {
+          const Id  = args.id;
+          console.log(
+            'Pokemon got by id: ' + args.id
+          );
+          const found = await pokemonServices.getById(Id);
+          const pokemon = found.message;
+        console.log(
+         'Pokemon got by id: ' + found.message
+       );
+        return pokemon;
+        }     
+        
+      }
+     }
   }
 });
 
