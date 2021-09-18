@@ -11,9 +11,9 @@ export interface IPokemon {
     species?: String,
     sprite?: String,
     description?: String,
-    // Trainer: TrainerType,
-    // Location: String,
-    // Talents: [Talent],
-    // Evolutions: [String],
-    // Description: String,
+    // trainer: TrainerType,
+    locations?: String[],   // Location[]
+    talents?: String[],     // Talent[]
+    ablities?: String[],    // Ability[]
+    evolutions?: String[]   // Pokemon[]
 }
