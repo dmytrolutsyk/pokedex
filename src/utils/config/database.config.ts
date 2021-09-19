@@ -48,14 +48,14 @@ export class DatabaseConfig {
         const talentServices = new TalentServices();
 
         try {
-            const fetchPokemons = await pokemonServices.getAll();
-            if (fetchPokemons.error || (fetchPokemons.message as mongoose.Document[])?.length == 0) {
-                await syncServices.syncPokemons(1, 150);
-            }
-
             const fetchTalents = await talentServices.getAll();
             if (fetchTalents.error || (fetchTalents.message as mongoose.Document[])?.length == 0) {
                 await syncServices.syncTalents(1, 150);
+            }
+
+            const fetchPokemons = await pokemonServices.getAll();
+            if (fetchPokemons.error || (fetchPokemons.message as mongoose.Document[])?.length == 0) {
+                await syncServices.syncPokemons(1, 150);
             }
 
             console.log(`Database initiated`);

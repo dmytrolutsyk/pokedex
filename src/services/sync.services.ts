@@ -81,6 +81,15 @@ export class SyncServices {
             if (fetchName.error) throw new Error(((fetchName.message) as BaseError).name);
             pokemon.name = fetchName.message as String;
 
+            const talents: ITalentDocument[] = [];
+            for (const number in pokemon.talents) {
+                const fetchTalent = await this.talentServices.getByField('number', number);
+                if (fetchTalent) console.error(fetchTalent);
+                const talent = fetchTalent.message as ITalentDocument;
+                talents.push(talent);
+            }
+            pokemon.talents = talents;
+
             const insert = await this.pokemonServices.insert(fetch.message as ITalent);
             if (insert.error) throw new Error(((fetch.message) as BaseError).name);
             

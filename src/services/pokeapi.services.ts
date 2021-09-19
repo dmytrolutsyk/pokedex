@@ -48,25 +48,34 @@ export class PokeapiServices {
             const { data } = await axios.get(`${this.url}/api/v2/pokemon/${id}`);
             //TODO: handle error
             
+            const talentsIds: String[] = data?.abilities?.map((_: any) => {
+                const id = _.ability?.url?.toString()
+                    .split('/')
+                    .map((_: string) => parseInt(_) as number)
+                    .find((_: number) => !isNaN(_)) as number[];
+                return `${id}`;
+            });
+
+            // talents fetch from url : https://pokeapi.co/api/v2/ability/7/
+            // locations fetch from url : https://pokeapi.co/api/v2/pokemon/132/encounters
+            // moves : https://pokeapi.co/api/v2/move/144/ 
+
             const pokemon: IPokemon = {
-                // name: data?.name,
                 pokenum: data?.id,
                 height: data?.height * 10,
                 weight: data?.weight * 0.10,
                 species: data?.species?.name,
-                sprite: data?.sprites.front_default,
+                sprite: data?.sprites?.front_default,
                 type: data?.types?.map((_: any) => (_?.type?.name as String).toUpperCase()),
+                talents: talentsIds
             }
-            /// name fetch from url : https://pokeapi.co/api/v2/pokemon-species/132/ => names
-            // talents fetch from url : https://pokeapi.co/api/v2/ability/7/
-            // locations fetch from url : https://pokeapi.co/api/v2/pokemon/132/encounters
-            // moves : https://pokeapi.co/api/v2/move/144/ 
+
             //TODO: handle error
 
             result = new Result<IPokemon>(pokemon);
         }
         catch(error) {
-            // console.error(`${log}: `, error);
+            console.error(`${log}: `, error);
             const resultError = new APIError('POKEAPI_FETCH_ERROR');
             result = new Result<IPokemon>(resultError as BaseError, true);
         }
@@ -88,6 +97,7 @@ export class PokeapiServices {
             const talents: ITalent[] = results?.map((_: any) => { 
                     const talent: ITalent = {
                         name: _.name,
+                        number: _.id,
                         // url: _.url,
                     }
                     return talent; 
@@ -115,6 +125,7 @@ export class PokeapiServices {
             //TODO: handle error
             
             const talent: ITalent = {
+                number: data?.id,
                 name: data?.names?.find((_: any) => _.language?.name == 'fr')?.name,
                 description: data?.flavor_text_entries?.find((_: any) => _.language?.name == 'fr')?.flavor_text
             };

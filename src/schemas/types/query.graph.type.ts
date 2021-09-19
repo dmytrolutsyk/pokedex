@@ -118,15 +118,15 @@ export const queryType = new GraphQLObjectType({
       }
     }    ,
     pokemon: {
-       type: PokemonGraph,
-       description: 'Find a Pokemon with its Id',
-       args: {
+      type: PokemonGraph,
+      description: 'Find a Pokemon with its Id',
+      args: {
         id: {
           type: GraphQLID,
           description: 'The ID of a `Pokemon`.',
         }
       },
-       resolve: async(obj, args) => {
+      resolve: async(obj, args) => {
         if (!args.id) {
           return null
         } else {
