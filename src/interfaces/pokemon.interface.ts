@@ -15,6 +15,6 @@ export interface IPokemon {
     // trainer: TrainerType,
     locations?: String[],   // Location[]
     talents?: String[] | ITalentDocument[],     // Talent[]
-    ablities?: String[],    // Ability[]
+    moves?: String[],    // Move[]
     evolutions?: String[]   // Pokemon[]
 }

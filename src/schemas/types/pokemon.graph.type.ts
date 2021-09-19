@@ -9,7 +9,7 @@ import {
 import { PokeapiServices } from '../../services';
 
 import PokemonTypeGraph from '../enums/pokemon.type.graph.enum'
-import AbilityGraph from './ability.graph.type';
+import MoveGraph from './move.graph.type';
 import TalentGraph from './talent.graph.type';
 
 const pokeapiServices = new PokeapiServices();
@@ -54,8 +54,8 @@ let PokemonGraph :GraphQLObjectType = new GraphQLObjectType({
     talents: {
       type: new GraphQLList(TalentGraph),
     },
-    abilities: {
-      type: new GraphQLList(AbilityGraph),
+    moves: {
+      type: new GraphQLList(MoveGraph),
     },
     evolutions: {
       type: new GraphQLList(PokemonGraph),

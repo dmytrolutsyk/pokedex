@@ -7,7 +7,7 @@ import {
 } from 'graphql';
 
 import PokemonTypeGraph from '../enums/pokemon.type.graph.enum'
-import AbilityInput from '../inputs/ability.input';
+import MoveInput from '../inputs/move.input';
 import PokemonGraph from '../types/pokemon.graph.type';
 import { mutationWithClientMutationId } from 'graphql-relay';
 import { PokemonServices } from '../../services';
@@ -43,8 +43,8 @@ const addPokemonMutation = mutationWithClientMutationId({
            talents: {
              type: new GraphQLList(GraphQLString),
            },
-           abilities: {
-             type: new GraphQLList(AbilityInput),
+           moves: {
+             type: new GraphQLList(MoveInput),
            },
            evolutions: {
              type: new GraphQLList(PokemonInput),

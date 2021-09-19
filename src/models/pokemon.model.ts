@@ -43,12 +43,12 @@ export const PokemonSchema = new Schema({
             ref: 'Talent',
         }
     ],
-    abilities: [
+    moves: [
         {
             type: Types.ObjectId,
             required: false,
             default: [],
-            ref: 'Ability',
+            ref: 'Move',
         }
     ],
     evolutions:[ 

@@ -9,7 +9,7 @@ import {
   } from 'graphql';
 
 import PokemonTypeGraph from '../enums/pokemon.type.graph.enum'
-import AbilityInput from './ability.input';
+import MoveInput from './move.input';
 import TalentInput from './talent.input';
 
 
@@ -47,8 +47,8 @@ let PokemonInput :GraphQLInputType = new GraphQLInputObjectType({
     talents: {
       type: new GraphQLList(GraphQLString),
     },
-    abilities: {
-      type: new GraphQLList(AbilityInput),
+    moves: {
+      type: new GraphQLList(MoveInput),
     },
     evolutions: {
       type: new GraphQLList(PokemonInput),

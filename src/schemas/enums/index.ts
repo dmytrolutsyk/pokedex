@@ -1,2 +1,2 @@
 export * from './pokemon.type.graph.enum';
-export * from './ability.types.graph.enum'
+export * from './move.types.graph.enum'

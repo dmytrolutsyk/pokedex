@@ -140,4 +140,30 @@ export class PokeapiServices {
         }
         return result;
     }
+
+    public async move(id: number): Promise<Result<ITalent>> {
+        const log = `${this.name} :: talent`; 
+        console.log(`${log} :: id = ${id}`);
+        
+        let result: Result<ITalent>;
+        try {
+            const { data } = await axios.get(`${this.url}/api/v2/ability/${id}`);
+            //TODO: handle error
+            
+            const talent: ITalent = {
+                number: data?.id,
+                name: data?.names?.find((_: any) => _.language?.name == 'fr')?.name,
+                description: data?.flavor_text_entries?.find((_: any) => _.language?.name == 'fr')?.flavor_text
+            };
+            //TODO: handle error
+            
+            result = new Result<ITalent>(talent);
+        }
+        catch(error) {
+            // console.error(`${log}: `, error);
+            const resultError = new APIError('POKEAPI_FETCH_ERROR');
+            result = new Result<ITalent>(resultError as BaseError, true);
+        }
+        return result;
+    }
 }

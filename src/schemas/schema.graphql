@@ -63,27 +63,31 @@ enum PokemonType {
   FAIRY
 }
 
-enum AbilityType {
+enum MoveType {
   PHYSIC
   SPECIAL
   STATUS
 }
 
-Type Ability {
+Type Move {
     id: ID
     type: PokeType,
-    ability: AbilityType,
+    moveType: MoveType,
     power: Int,
     precision: Float
     powerPoint: Int,
     target: Int
 }
 
-extend type Ability {
+extend type Move {
   """
-  The type of the ability.
+  The pokemon type of the move.
   """
-  Type: PokeType
+  Type: PokeType,
+  """
+  The type of move.
+  """
+  MoveType: MoveType
 }
 
 
@@ -140,12 +144,12 @@ input TalentInput {
     
 }
 
-input AbilityInput {
+input MoveInput {
     _id: ID,
     name: String
     description: String,
     type: PokemonInput,
-    abilityType: AbilityTypeGraph,
+    moveType: MoveTypeGraph,
     power: Int,
     precision: Float,
     powerPoint: Int,

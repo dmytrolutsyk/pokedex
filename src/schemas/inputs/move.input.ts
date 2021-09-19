@@ -7,10 +7,10 @@ import {
   } from 'graphql';
 
 import PokemonTypeGraph from '../enums/pokemon.type.graph.enum'
-import AbilityTypeGraph from '../enums/ability.types.graph.enum';
+import MoveTypeGraph from '../enums/move.types.graph.enum';
 
 export default new GraphQLInputObjectType({
-  name: 'AbilityInput',
+  name: 'MoveInput',
   fields: {
     id: {
       type: GraphQLID
@@ -21,8 +21,8 @@ export default new GraphQLInputObjectType({
     type: {
       type: PokemonTypeGraph
     },
-    abilityType: {
-      type: AbilityTypeGraph,
+    moveType: {
+      type: MoveTypeGraph,
     },
     power: {
       type: GraphQLInt
