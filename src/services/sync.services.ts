@@ -1,8 +1,7 @@
-import { PokemonServices, TalentServices, PokeapiServices } from '.';
+import { PokemonServices, TalentServices, PokeapiServices, MoveServices } from '.';
 import { APIError, BaseError, Result } from '../utils';
-import { IPokemonDocument, ITalentDocument } from '../models';
-import { IPokemon, ITalent } from '../interfaces';
-import { createPrinter } from 'typescript';
+import { IMoveDocument, IPokemonDocument, ITalentDocument } from '../models';
+import { IPokemonDetails, ITalent } from '../interfaces';
 
 
 export class SyncServices {
@@ -13,6 +12,7 @@ export class SyncServices {
     private pokeapiServices = new PokeapiServices();
     private talentServices = new TalentServices(); 
     private pokemonServices = new PokemonServices();
+    private moveServices = new MoveServices();
 
     constructor(){
         this.syncTalent = this.syncTalent.bind(this);
@@ -47,15 +47,10 @@ export class SyncServices {
             const talents: ITalentDocument[] = [];
             for (let i = min; i <= max; i++) {
                 let sync = await this.syncTalent(i);
-                if (sync.error) {
-                    // handle error
-                    // return null;
-                }
-                else {
-                    const talent = sync.message as ITalentDocument
-                    // console.log({ talent });
-                    talents.push(talent);
-                }
+                if (sync.error) continue;
+
+                const talent = sync.message as ITalentDocument
+                talents.push(talent);
             }
             result =  new Result<ITalentDocument[]>(talents);
             
@@ -77,9 +72,12 @@ export class SyncServices {
             if (fetch.error) throw new Error(((fetch.message) as BaseError).name);
             const pokemon = fetch.message as IPokemonDocument;
 
-            const fetchName = await this.pokeapiServices.pokemonName(pokenum);
-            if (fetchName.error) throw new Error(((fetchName.message) as BaseError).name);
-            pokemon.name = fetchName.message as String;
+            const fetchPokemonDetails = await this.pokeapiServices.pokemonDetails(pokenum);
+            if (fetchPokemonDetails.error) throw new Error(((fetchPokemonDetails.message) as BaseError).name);
+            
+            const details = fetchPokemonDetails.message as IPokemonDetails;
+            pokemon.name = details.name;
+            pokemon.description = details.description;
 
             const talents: ITalentDocument[] = [];
             for (const number in pokemon.talents) {
@@ -90,7 +88,17 @@ export class SyncServices {
             }
             pokemon.talents = talents;
 
-            const insert = await this.pokemonServices.insert(fetch.message as ITalent);
+            const moves: IMoveDocument[] = [];
+            for (const number in pokemon.moves) {
+                const fetchMove = await this.moveServices.getByField('number', number);
+                if (fetchMove) console.error(fetchMove);
+                const move = fetchMove.message as IMoveDocument;
+                moves.push(move);
+            }
+            pokemon.moves = moves;
+
+
+            const insert = await this.pokemonServices.insert(pokemon);
             if (insert.error) throw new Error(((fetch.message) as BaseError).name);
             
             result = new Result<IPokemonDocument>(insert.message);
@@ -121,7 +129,50 @@ export class SyncServices {
             // const resultError = new APIError('???');
             result =  new Result<IPokemonDocument[]>([]);
         }
+        return result;
+    }
 
+    public async syncMove(id: number): Promise<Result<IMoveDocument>> {
+        const log = `${this.name} :: syncMove`;
+        console.log(`${log} :: id = `, id);
+
+        let result: Result<IMoveDocument>;
+        try {
+            const fetch = await this.pokeapiServices.move(id);
+            if (fetch.error) throw new Error(((fetch.message) as BaseError).name);
+            const move = fetch.message as IMoveDocument;
+
+            const insert = await this.moveServices.insert(move);
+            if (insert.error) throw new Error(((fetch.message) as BaseError).name);
+            
+            result = new Result<IMoveDocument>(insert.message);
+        }
+        catch (error) {
+            const resultError = new APIError('???');
+            result = new Result<IMoveDocument>(resultError as BaseError, true);
+        }
+        return result;
+    }
+
+    public async syncMoves(min: number, max: number): Promise<Result<IMoveDocument[]>> {
+        let result: Result<IMoveDocument[]>;
+
+        try {
+            const moves: IMoveDocument[] = [];
+            for (let id = min; id <= max; id++) {
+                const sync = await this.syncMove(id);
+                if (sync.error) continue;
+                
+                const move = sync.message as IMoveDocument
+                moves.push(move);
+            }
+            result =  new Result<IMoveDocument[]>(moves);
+            
+        }
+        catch (error) {
+            // const resultError = new APIError('???');
+            result =  new Result<IMoveDocument[]>([]);
+        }
         return result;
     }
 }

@@ -1,7 +1,7 @@
 import { GraphQLObjectType, GraphQLString } from 'graphql';
 
-import PokemonGraph from './pokemon.graph.type';
-import {ivysaur, bulbasaur } from '../../utils/config/database.fake';
+import { PokemonGraph } from '../../graphs';
+import { ivysaur, bulbasaur } from '../../utils/config/database.fake';
 export default new GraphQLObjectType({
   name: 'Query',
   fields: {

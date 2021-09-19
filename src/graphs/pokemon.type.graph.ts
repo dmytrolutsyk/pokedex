@@ -1,7 +1,7 @@
 import { GraphQLEnumType } from 'graphql';
 
-// export const PokemonTypeGraph = new GraphQLEnumType({
-  export default new GraphQLEnumType({
+
+export default new GraphQLEnumType({
   name: 'PokemonType',
   description: 'The possible pokemon types.',
   values: {

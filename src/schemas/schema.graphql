@@ -1,16 +1,14 @@
 Type Pokemon {
-    _id: ID,
-    name: String,
-    pokenum: Int,
-    height: Int,
-    weight: Float,
-    color: String,
-    # Trainer: TrainerType,
-    # Location: String,
-    species: [String]
-    talents: [Talent],
-    description: String,
-    sprite: String
+  _id: ID,
+  name: String,
+  pokenum: Int,
+  height: Int,
+  weight: Float,
+  color: String,
+  talents: [Talent],
+  moves: [Move],
+  description: String,
+  sprite: String
 }
 
 extend type Pokemon {
@@ -29,17 +27,17 @@ extend type Pokemon {
 
 
 Type Trainer {
-    _id: ID
-    name: String,
-    type: String
-    height: Int,
-    weight: Float,
-    hairColor : String
+  _id: ID
+  name: String,
+  type: String
+  height: Int,
+  weight: Float,
+  hairColor : String
 }
 Type Talent {
-    _id: ID
-    name: String,
-    description: String
+  _id: ID
+  name: String,
+  description: String
 }
 
 enum PokemonType {
@@ -64,19 +62,21 @@ enum PokemonType {
 }
 
 enum MoveType {
-  PHYSIC
+  PHYSICAL
   SPECIAL
   STATUS
 }
 
 Type Move {
-    id: ID
-    type: PokeType,
-    moveType: MoveType,
-    power: Int,
-    precision: Float
-    powerPoint: Int,
-    target: Int
+  id: ID,
+  name: String,
+  description: String,
+  type: PokeType,
+  moveType: MoveType,
+  power: Int,
+  precision: Float
+  powerPoint: Int,
+  target: String
 }
 
 extend type Move {
@@ -95,63 +95,63 @@ type Mutation {
   """
   Creates a new pokemon.
   """
-  createPokemon(_id: ID,
+  createPokemon(
+    _id: ID,
     name: String!,
     pokenum: Int,
     height: Int,
     weight: Float,
     color: String,
-    species: [Species],
     talents: [Talent],
     description: String,
-    sprite: String): Pokemon
+    sprite: String
+  ): Pokemon
 }
 
 extend type Mutation {
   """
   Update an existing pokemon.
   """
-  updatePokemon(_id: ID,
+  updatePokemon(
+    _id: ID,
     name: String!,
     pokenum: Int,
     height: Int,
     weight: Float,
     color: String,
-    species: [Species],
-    talents: [Talent],
-    description: String,
-    sprite: String): Pokemon
-}
-
-input PokemonInput {
-    _id: ID,
-    name: String!
-    ipokenum: Int,
-    height: Int,
-    weight: Float,
-    color: String,
-    species: [Species],
     talents: [Talent],
     description: String,
     sprite: String
+  ): Pokemon
+}
+
+input PokemonInput {
+  _id: ID,
+  name: String!
+  ipokenum: Int,
+  height: Int,
+  weight: Float,
+  color: String,
+  talents: [Talent],
+  description: String,
+  sprite: String
 }
 
 
 input TalentInput {
-    _id: ID,
-    name: String
-    description: String,
-    
+  _id: ID,
+  name: String
+  description: String,
 }
 
 input MoveInput {
-    _id: ID,
-    name: String
-    description: String,
-    type: PokemonInput,
-    moveType: MoveTypeGraph,
-    power: Int,
-    precision: Float,
-    powerPoint: Int,
-    target: Int
+  _id: ID,
+  name: String
+  description: String,
+  type: PokemonInput,
+  moveType: MoveTypeGraph,
+  power: Int,
+  precision: Float,
+  powerPoint: Int,
+  target: Int
 }

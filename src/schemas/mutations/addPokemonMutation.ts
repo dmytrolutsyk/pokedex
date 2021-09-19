@@ -1,18 +1,12 @@
-import {
-  GraphQLID,
-  GraphQLInt,
-  GraphQLString,
-  GraphQLFloat,
-  GraphQLList
-} from 'graphql';
-
-import PokemonTypeGraph from '../enums/pokemon.type.graph.enum'
-import MoveInput from '../inputs/move.input';
-import PokemonGraph from '../types/pokemon.graph.type';
+import { GraphQLID, GraphQLInt, GraphQLString, GraphQLFloat, GraphQLList } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
-import { PokemonServices } from '../../services';
-import PokemonInput from '../inputs/pokemon.input'
+
 import { IPokemonDocument } from '../../models';
+import { PokemonGraph } from '../../graphs';
+import { PokemonServices } from '../../services';
+import PokemonTypeGraph from '../../graphs/pokemon.type.graph'
+import MoveInput from '../inputs/move.input';
+import PokemonInput from '../inputs/pokemon.input'
 
 
 const addPokemonMutation = mutationWithClientMutationId({

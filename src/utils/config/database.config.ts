@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { CommonServices, PokeapiServices, PokemonServices, SyncServices, TalentServices } from '../../services';
+import { CommonServices, MoveServices, PokeapiServices, PokemonServices, SyncServices, TalentServices } from '../../services';
 import { IPokemon } from '../../interfaces';
 import { PokemonType } from '../../enum';
 
@@ -46,15 +46,21 @@ export class DatabaseConfig {
         const syncServices = new SyncServices();
         const pokemonServices = new PokemonServices();
         const talentServices = new TalentServices();
+        const moveServices = new MoveServices();
 
         try {
             const fetchTalents = await talentServices.getAll();
-            if (fetchTalents.error || (fetchTalents.message as mongoose.Document[])?.length == 0) {
-                await syncServices.syncTalents(1, 150);
+            if (fetchTalents.error || (fetchTalents.message as mongoose.Document[])?.length < 150) {
+                await syncServices.syncTalents(1, 327);
+            }
+
+            const fetchMoves = await moveServices.getAll();
+            if (fetchMoves.error || (fetchMoves.message as mongoose.Document[])?.length < 150) {
+                await syncServices.syncMoves(1, 844);
             }
 
             const fetchPokemons = await pokemonServices.getAll();
-            if (fetchPokemons.error || (fetchPokemons.message as mongoose.Document[])?.length == 0) {
+            if (fetchPokemons.error || (fetchPokemons.message as mongoose.Document[])?.length < 150) {
                 await syncServices.syncPokemons(1, 150);
             }
 

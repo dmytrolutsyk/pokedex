@@ -1,5 +1,5 @@
 import { PokemonType } from '../enum';
-import { ITalentDocument } from '../models';
+import { IMoveDocument, ITalentDocument } from '../models';
 
 export interface IPokemon {
     _id?: String,
@@ -12,9 +12,7 @@ export interface IPokemon {
     species?: String,
     sprite?: String,
     description?: String,
-    // trainer: TrainerType,
-    locations?: String[],   // Location[]
-    talents?: String[] | ITalentDocument[],     // Talent[]
-    moves?: String[],    // Move[]
+    talents?: String[] | ITalentDocument[],
+    moves?: String[] | IMoveDocument[],
     evolutions?: String[]   // Pokemon[]
 }

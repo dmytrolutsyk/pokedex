@@ -6,8 +6,9 @@ import {
     GraphQLFloat
   } from 'graphql';
 
-import PokemonTypeGraph from '../enums/pokemon.type.graph.enum'
-import MoveTypeGraph from '../enums/move.types.graph.enum';
+import PokemonTypeGraph from '../../graphs/pokemon.type.graph'
+import MoveTypeGraph from '../../graphs/move.types.graph';
+
 
 export default new GraphQLInputObjectType({
   name: 'MoveInput',

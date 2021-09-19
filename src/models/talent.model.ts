@@ -1,4 +1,4 @@
-/** Modèle pour la classe Pokemon */
+/** Modèle pour la classe Talent */
 
 import { model, Schema, Document } from 'mongoose';
 

@@ -1,6 +1,7 @@
 import { GraphQLObjectType, GraphQLID, GraphQLString } from 'graphql';
 
-export default new GraphQLObjectType({
+
+export const TalentGraph = new GraphQLObjectType({
   name: 'Talent',
   fields: {
     _id: {

@@ -1,5 +1,5 @@
 export enum MoveType {
-    PHYSIC = "PHYSIC",
+    PHYSIC = "PHYSICAL",
     SPECIAL = "SPECIAL",
     STATUS = "STATUS"
 }

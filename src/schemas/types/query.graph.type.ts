@@ -1,19 +1,16 @@
 import { GraphQLID, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
 
-import  PokemonGraph from './pokemon.graph.type';
-import TalentGraph from './talent.graph.type';
+import { MoveGraph, TalentGraph, PokemonGraph } from '../../graphs';
+import { IPokemonDetails } from '../../interfaces';
 import { PokemonServices, PokeapiServices, TalentServices, SyncServices,  } from '../../services';
-
 import  Mutation from './mutation';
-
 
 
 const pokemonServices = new PokemonServices();
 const pokeapiServices = new PokeapiServices();
 const talentServices = new TalentServices();
 const syncServices = new SyncServices();
-
 
 export const queryType = new GraphQLObjectType({
   name: 'Query',
@@ -62,7 +59,6 @@ export const queryType = new GraphQLObjectType({
         if (found.error) { 
           // handle error
         }
-        const pokemon = found.message;
         return found.message;
       },
       
@@ -77,13 +73,41 @@ export const queryType = new GraphQLObjectType({
         return found.message;
       }
     },
+    fetchMove: {
+      type: MoveGraph,
+      resolve: async () => {
+        const found = await pokeapiServices.move(15);
+        if (found.error) { 
+          // handle error
+        }
+        return found.message;
+      }
+    },
     syncTalents: {
       type: GraphQLList(GraphQLNonNull(TalentGraph)),
+      args: {
+        min: { type: GraphQLInt },
+        max: { type: GraphQLInt }
+      },
       resolve: async (obj, args) => {
         const { min, max } = args;
         if (!min || !max) return null;
 
         const sync = await syncServices.syncTalents(min, max);
+        return sync.message;
+      }
+    },
+    syncMoves: {
+      type: GraphQLList(GraphQLNonNull(MoveGraph)),
+      args: {
+        min: { type: GraphQLInt },
+        max: { type: GraphQLInt }
+      },
+      resolve: async (obj, args) => {
+        const { min, max } = args;
+        if (!min || !max) return null;
+
+        const sync = await syncServices.syncMoves(min, max);
         return sync.message;
       }
     },
@@ -113,8 +137,24 @@ export const queryType = new GraphQLObjectType({
         const { id } = args;
         if (!id) return null;
 
-        const fetch = await pokeapiServices.pokemonName(id);
-        return fetch.message;
+        const fetch = await pokeapiServices.pokemonDetails(id);
+        return fetch.message.name;
+      }
+    },
+    fetchPkmnDescription: {
+      type: GraphQLString,
+      args: {
+        id: {
+          type: GraphQLID,
+          description: 'The ID of a `Pokemon`.',
+        }
+      },
+      resolve: async (obj, args) => {
+        const { id } = args;
+        if (!id) return null;
+
+        const fetch = await pokeapiServices.pokemonDetails(id);
+      return (fetch.message as IPokemonDetails).description;
       }
     }    ,
     pokemon: {

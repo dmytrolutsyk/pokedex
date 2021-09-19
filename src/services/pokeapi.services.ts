@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 import { APIError, BaseError, Result } from '../utils';
-import { IPokemon, ITalent } from '../interfaces';
+import { IMove, IPokemon, ITalent, IPokemonDetails } from '../interfaces';
+import { PokemonType } from '../enum';
 
 
 export class PokeapiServices {
@@ -10,30 +11,43 @@ export class PokeapiServices {
     
     constructor(){
         this.pokemon = this.pokemon.bind(this);
-        this.pokemonName = this.pokemonName.bind(this);
+        this.pokemonDetails = this.pokemonDetails.bind(this);
 
         this.talent = this.talent.bind(this);
         this.talents = this.talents.bind(this);
+
+        this.move = this.move.bind(this);
     };
 
-    public async pokemonName(id: number): Promise<Result<String>> {
-        const log = `${this.name} :: pokemonName`;
-        console.log(`${log} :: id = ${id}`); 
 
-        let result: Result<String>;
+
+    public async pokemonDetails(id: number): Promise<Result<IPokemonDetails>> {
+        const log = `${this.name} :: pokemonDetails`;
+        console.log(`${log} :: id = ${id}`);
+
+        let result: Result<IPokemonDetails>;
         try {
             const { data } = await axios.get(`${this.url}/api/v2/pokemon-species/${id}`);
             //TODO: handle error
             
             const name = data?.names.find((_: any) => _?.language?.name == 'fr')?.name;
-            //TODO: handle error
+            const description = data?.flavor_text_entries
+                ?.find((_: any) => _?.language?.name == 'fr')?.flavor_text
+                ?.split('\n')
+                ?.join(' ');
+            const species = data?.genera?.find((_: any) => _?.language?.name == 'fr')?.genus;
 
-            result = new Result<String>(name);
+            const details: IPokemonDetails = {
+                name: name, 
+                description: description,
+                species: species,
+            }
+            result = new Result<IPokemonDetails>(details);
         }
         catch(error) {
             // console.error(`${log}: `, error);
             const resultError = new APIError('POKEAPI_FETCH_ERROR');
-            result = new Result<String>(resultError as BaseError, true);
+            result = new Result<IPokemonDetails>(resultError as BaseError, true);
         }
         return result;
     }
@@ -56,18 +70,22 @@ export class PokeapiServices {
                 return `${id}`;
             });
 
-            // talents fetch from url : https://pokeapi.co/api/v2/ability/7/
-            // locations fetch from url : https://pokeapi.co/api/v2/pokemon/132/encounters
-            // moves : https://pokeapi.co/api/v2/move/144/ 
+            const movesIds: String[] = data?.moves?.map((_: any) => {
+                const id = _.ability?.url?.toString()
+                    .split('/')
+                    .map((_: string) => parseInt(_) as number)
+                    .find((_: number) => !isNaN(_)) as number[];
+                return `${id}`;
+            });
 
             const pokemon: IPokemon = {
                 pokenum: data?.id,
                 height: data?.height * 10,
                 weight: data?.weight * 0.10,
-                species: data?.species?.name,
                 sprite: data?.sprites?.front_default,
-                type: data?.types?.map((_: any) => (_?.type?.name as String).toUpperCase()),
-                talents: talentsIds
+                type: data?.types?.map((_: any) => (_?.type?.name as String)?.toUpperCase()),
+                talents: talentsIds,
+                moves: movesIds,
             }
 
             //TODO: handle error
@@ -127,10 +145,12 @@ export class PokeapiServices {
             const talent: ITalent = {
                 number: data?.id,
                 name: data?.names?.find((_: any) => _.language?.name == 'fr')?.name,
-                description: data?.flavor_text_entries?.find((_: any) => _.language?.name == 'fr')?.flavor_text
+                description: (data?.flavor_text_entries
+                    ?.find((_: any) => _.language?.name == 'fr')?.flavor_text as String)
+                    ?.split('\n')
+                    ?.join(' ')
             };
             //TODO: handle error
-            
             result = new Result<ITalent>(talent);
         }
         catch(error) {
@@ -141,28 +161,37 @@ export class PokeapiServices {
         return result;
     }
 
-    public async move(id: number): Promise<Result<ITalent>> {
-        const log = `${this.name} :: talent`; 
+    public async move(id: number): Promise<Result<IMove>> {
+        const log = `${this.name} :: move`; 
         console.log(`${log} :: id = ${id}`);
         
-        let result: Result<ITalent>;
+        let result: Result<IMove>;
         try {
-            const { data } = await axios.get(`${this.url}/api/v2/ability/${id}`);
+            const { data } = await axios.get(`${this.url}/api/v2/move/${id}`);
             //TODO: handle error
             
-            const talent: ITalent = {
-                number: data?.id,
+            const move: IMove = {
                 name: data?.names?.find((_: any) => _.language?.name == 'fr')?.name,
-                description: data?.flavor_text_entries?.find((_: any) => _.language?.name == 'fr')?.flavor_text
+                description: (data?.flavor_text_entries
+                    ?.find((_: any) => _.language?.name == 'fr')?.flavor_text as String)
+                    ?.split('\n')
+                    ?.join(' '),
+                type: (data?.type?.name as String).toUpperCase() as PokemonType,
+                moveType: (data?.damage_class?.name as String)?.toUpperCase(),
+                power: data?.power,
+                precision: data?.accuracy,
+                powerPoint: data?.pp,
+                target: data?.target?.name,
+                number: data?.id,
             };
             //TODO: handle error
             
-            result = new Result<ITalent>(talent);
+            result = new Result<IMove>(move);
         }
         catch(error) {
             // console.error(`${log}: `, error);
             const resultError = new APIError('POKEAPI_FETCH_ERROR');
-            result = new Result<ITalent>(resultError as BaseError, true);
+            result = new Result<IMove>(resultError as BaseError, true);
         }
         return result;
     }
