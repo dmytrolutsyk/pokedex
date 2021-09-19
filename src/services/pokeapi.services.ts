@@ -36,11 +36,12 @@ export class PokeapiServices {
                 ?.split('\n')
                 ?.join(' ');
             const species = data?.genera?.find((_: any) => _?.language?.name == 'fr')?.genus;
-
+            
             const details: IPokemonDetails = {
                 name: name, 
                 description: description,
                 species: species,
+                evolution_chain: this.idFromUrl(data?.evolution_chain?.url).toLocaleString(),
             }
             result = new Result<IPokemonDetails>(details);
         }
@@ -62,21 +63,8 @@ export class PokeapiServices {
             const { data } = await axios.get(`${this.url}/api/v2/pokemon/${id}`);
             //TODO: handle error
             
-            const talentsIds: String[] = data?.abilities?.map((_: any) => {
-                const id = _.ability?.url?.toString()
-                    .split('/')
-                    .map((_: string) => parseInt(_) as number)
-                    .find((_: number) => !isNaN(_)) as number[];
-                return `${id}`;
-            });
-
-            const movesIds: String[] = data?.moves?.map((_: any) => {
-                const id = _.ability?.url?.toString()
-                    .split('/')
-                    .map((_: string) => parseInt(_) as number)
-                    .find((_: number) => !isNaN(_)) as number[];
-                return `${id}`;
-            });
+            // const talentsIds: String[] = data?.abilities?.map((_: any) => { this.idFromUrl(_.ability?.url).toLocaleString(); });
+            // const movesIds: String[] = data?.moves?.map((_: any) => { this.idFromUrl(_.move?.url).toLocaleString(); });
 
             const pokemon: IPokemon = {
                 pokenum: data?.id,
@@ -84,8 +72,8 @@ export class PokeapiServices {
                 weight: data?.weight * 0.10,
                 sprite: data?.sprites?.front_default,
                 type: data?.types?.map((_: any) => (_?.type?.name as String)?.toUpperCase()),
-                talents: talentsIds,
-                moves: movesIds,
+                talents: data?.abilities?.map((_: any) => { this.idFromUrl(_.ability?.url).toLocaleString(); }),
+                moves: data?.moves?.map((_: any) => { this.idFromUrl(_.move?.url).toLocaleString(); }),
             }
 
             //TODO: handle error
@@ -195,4 +183,44 @@ export class PokeapiServices {
         }
         return result;
     }
+
+    public async evolutions(id: string): Promise<Result<String[]>> {
+        const log = `${this.name} :: evolutions`; 
+        console.log(`${log} :: id = ${id}`);
+        
+        let result: Result<String[]>;
+        try {
+            const { data } = await axios.get(`${this.url}/api/v2/evolution-chain/${id}`);
+            //TODO: handle error
+            
+            const pokenums: String[] = [];
+
+            const pokenum = this.idFromUrl(data?.chain?.species?.url)?.toLocaleString() as string;
+            if (pokenum != null) pokenums.push(pokenum);
+
+            let evolves = data?.chain?.evolves_to;
+            while (evolves?.length > 0) {
+                const numbers = evolves.map((_: any) => this.idFromUrl(_.species?.url).toLocaleString()) as string[];
+                numbers.forEach(number => { pokenums.push(number); });
+
+                evolves = evolves[0].evolves_to;
+            }
+            
+            result = new Result<String[]>(pokenums);
+        }
+        catch(error) {
+            console.error(`${log}: `, error);
+            const resultError = new APIError('POKEAPI_FETCH_ERROR');
+            result = new Result<String[]>(resultError as BaseError, true);
+        }
+        return result;
+    }
+
+    public idFromUrl(url?: string): number {
+        return url
+            ?.toString()
+            ?.split('/')
+            ?.map((_: string) => parseInt(_) as number)
+            ?.find((_: number) => !isNaN(_)) as number;
+    } 
 }

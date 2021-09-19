@@ -14,7 +14,7 @@ export const PokemonSchema = new Schema({
         unique: true,
     },
     pokenum: {
-        type: Number,
+        type: String,
         required: true,
         unique: true,
     },

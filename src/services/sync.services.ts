@@ -78,6 +78,19 @@ export class SyncServices {
             const details = fetchPokemonDetails.message as IPokemonDetails;
             pokemon.name = details.name;
             pokemon.description = details.description;
+            pokemon.species = details.species;
+
+            const fetchEvolution = await this.pokeapiServices.evolutions(details.evolution_chain as string);
+            if (fetchEvolution.error) throw new Error(((fetchEvolution.message) as BaseError).name);
+
+            const evolutions: String[] = [];
+            for (const number in  fetchEvolution.message as string[]) {
+                const fetchPokemon = await this.pokemonServices.getByField('pokenum', number)
+                if (fetchPokemon) console.error(fetchPokemon);
+                const evolution = fetchPokemon.message as IPokemonDocument;
+                evolutions.push(evolution._id);
+            }
+            pokemon.evolutions = evolutions;
 
             const talents: ITalentDocument[] = [];
             for (const number in pokemon.talents) {
@@ -132,6 +145,67 @@ export class SyncServices {
         return result;
     }
 
+    // public async syncEvolution(pokenum: number): Promise<Result<IPokemonDocument>>  {
+    //     const log = `${this.name} :: syncEvolution`;
+    //     console.log(`${log} :: pokenum = `, pokenum);
+
+    //     let result: Result<IPokemonDocument>;
+    //     try {
+    //         const fetch = await this.pokemonServices.getByField('pokenum', `${pokenum}`);
+    //         if (fetch.error) throw new Error(((fetch.message) as BaseError).name);
+    //         const pokemon = fetch.message as IPokemonDocument;
+
+    //         const fetchPokemonDetails = await this.pokeapiServices.pokemonDetails(pokenum);
+    //         if (fetchPokemonDetails.error) throw new Error(((fetchPokemonDetails.message) as BaseError).name);
+            
+    //         const details = fetchPokemonDetails.message as IPokemonDetails;
+
+    //         const fetchEvolution = await this.pokeapiServices.evolutions(details.evolution_chain as string);
+    //         if (fetchEvolution.error) throw new Error(((fetchEvolution.message) as BaseError).name);
+
+    //         const evolutions: String[] = [];
+    //         for (const number in  fetchEvolution.message as string[]) {
+    //             const fetchPokemon = await this.pokemonServices.getByField('pokenum', number)
+    //             if (fetchPokemon) console.error(fetchPokemon);
+    //             const evolution = fetchPokemon.message as IPokemonDocument;
+    //             evolutions.push(evolution._id);
+    //         }
+    //         pokemon.evolutions = evolutions;
+
+    //         const updated = await this.pokemonServices.update(pokemon._id, pokemon);
+    //         if (updated.error) throw new Error(((fetch.message) as BaseError).name);
+            
+    //         result = new Result<IPokemonDocument>(updated.message);
+    //     }
+    //     catch (error) {
+    //         const resultError = new APIError('???');
+    //         result = new Result<IPokemonDocument>(resultError as BaseError, true);
+    //     }
+    //     return result;
+    // }
+    
+    // public async syncEvolutions(min: number, max: number): Promise<Result<IPokemonDocument[]>> {
+    //     let result: Result<IPokemonDocument[]>;
+
+    //     try {
+    //         const pokemons: IPokemonDocument[] = [];
+    //         for (let id = min; id <= max; id++) {
+    //             const sync = await this.syncEvolution(id);
+    //             if (sync.error) continue;
+                
+    //             const pokemon = sync.message as IPokemonDocument
+    //             pokemons.push(pokemon);
+    //         }
+    //         result =  new Result<IPokemonDocument[]>(pokemons);
+            
+    //     }
+    //     catch (error) {
+    //         // const resultError = new APIError('???');
+    //         result =  new Result<IPokemonDocument[]>([]);
+    //     }
+    //     return result;
+    // }
+    
     public async syncMove(id: number): Promise<Result<IMoveDocument>> {
         const log = `${this.name} :: syncMove`;
         console.log(`${log} :: id = `, id);

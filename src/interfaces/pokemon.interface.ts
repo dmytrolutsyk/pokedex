@@ -4,7 +4,7 @@ import { IMoveDocument, ITalentDocument } from '../models';
 export interface IPokemon {
     _id?: String,
     name?: String,
-    pokenum?: Number,
+    pokenum?: String,
     type?: PokemonType[],
     height?: Number,
     weight?: Number,

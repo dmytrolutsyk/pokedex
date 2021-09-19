@@ -7,7 +7,7 @@ import { PokemonModel, IPokemonDocument } from '../models/pokemon.model';
 
 export class PokemonServices extends CommonServices<IPokemonDocument, IPokemon>{
     
-    constructor() { super('PokemonServices', ['talents', 'moves']); };
+    constructor() { super('PokemonServices', ['talents', 'moves', 'evolutions']); };
 
     protected getModel(): Model<IPokemonDocument> { return PokemonModel };
 

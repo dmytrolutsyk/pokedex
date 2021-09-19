@@ -23,7 +23,7 @@ let PokemonInput :GraphQLInputType = new GraphQLInputObjectType({
       type: GraphQLString
     },
     pokenum: {
-      type: GraphQLInt,
+      type: GraphQLString,
     },
     type: {
       // type: new GraphQLList(PokemonTypeGraph),

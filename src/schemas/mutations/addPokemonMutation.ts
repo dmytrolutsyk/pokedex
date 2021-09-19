@@ -13,42 +13,42 @@ const addPokemonMutation = mutationWithClientMutationId({
     name: 'AddPokemon',
     description: 'Add a pokemon',
     inputFields: {
-         _id: {
-             type:  GraphQLID
-           },
-          name: {
-            type: GraphQLString
-          },
-           pokenum: {
-             type: GraphQLInt,
-           },
-           type: {
-             type: new GraphQLList(PokemonTypeGraph),
-           },
-           height: {
-             type: GraphQLInt,
-           },
-           weight: {
-             type: GraphQLFloat,
-           },
-           color: {
-             type: GraphQLString,
-           },
-           talents: {
-             type: new GraphQLList(GraphQLString),
-           },
-           moves: {
-             type: new GraphQLList(MoveInput),
-           },
-           evolutions: {
-             type: new GraphQLList(PokemonInput),
-           },
-           description: {
-             type: GraphQLString,
-           },
-           sprite: {
-             type: GraphQLString,
-           }
+    _id: {
+        type:  GraphQLID
+      },
+    name: {
+      type: GraphQLString
+    },
+      pokenum: {
+        type: GraphQLString,
+      },
+      type: {
+        type: new GraphQLList(PokemonTypeGraph),
+      },
+      height: {
+        type: GraphQLInt,
+      },
+      weight: {
+        type: GraphQLFloat,
+      },
+      color: {
+        type: GraphQLString,
+      },
+      talents: {
+        type: new GraphQLList(GraphQLString),
+      },
+      moves: {
+        type: new GraphQLList(MoveInput),
+      },
+      evolutions: {
+        type: new GraphQLList(PokemonInput),
+      },
+      description: {
+        type: GraphQLString,
+      },
+      sprite: {
+        type: GraphQLString,
+      }
     },
     outputFields: {
         pokemon: {

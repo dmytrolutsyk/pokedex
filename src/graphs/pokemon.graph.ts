@@ -1,12 +1,14 @@
 import { GraphQLObjectType, GraphQLID, GraphQLInt, GraphQLString, GraphQLFloat, GraphQLList } from 'graphql';
 
-import { PokeapiServices } from '../services';
+import { PokeapiServices, PokemonServices } from '../services';
 import { MoveGraph, TalentGraph } from '.';
 import PokemonTypeGraph from './pokemon.type.graph'
 import { IPokemonDetails } from '../interfaces';
+import { IPokemonDocument } from '../models';
 
 
 const pokeapiServices = new PokeapiServices();
+const pokemonServices = new PokemonServices();
 
 export let PokemonGraph: GraphQLObjectType = new GraphQLObjectType({
   name: 'Pokemon',
@@ -24,7 +26,7 @@ export let PokemonGraph: GraphQLObjectType = new GraphQLObjectType({
       }
     },
     pokenum: {
-      type: GraphQLInt,
+      type: GraphQLString,
     },
     type: {
       type: new GraphQLList(PokemonTypeGraph),
@@ -49,6 +51,27 @@ export let PokemonGraph: GraphQLObjectType = new GraphQLObjectType({
     },
     evolutions: {
       type: new GraphQLList(PokemonGraph),
+      resolve: async (obj) => {
+        if (obj?.evolutions.lenth > 0) return obj.evolutions;
+
+        const fetch = await pokeapiServices.pokemonDetails(obj?.pokenum);
+        if (fetch.error) return null
+        const details = fetch.message as IPokemonDetails;
+
+        const fetchEvolutionsNumbers = await pokeapiServices.evolutions(details.evolution_chain as string);
+        if (fetchEvolutionsNumbers.error) return null;
+        const pokenums = fetchEvolutionsNumbers.message as String[];
+
+        const evolutions: IPokemonDocument[] = [];        
+        for await (let number of pokenums) {
+          const fetchPokemon = await pokemonServices.getByField('pokenum', number as string)
+          if (fetchPokemon) console.error(fetchPokemon);
+          const evolution = fetchPokemon.message as IPokemonDocument;
+          console.log({evolution});
+          evolutions.push(evolution);
+        }
+        return evolutions;
+      }
     },
     description: {
       type: GraphQLString,
