@@ -14,8 +14,8 @@ import { mutationWithClientMutationId } from 'graphql-relay';
 import { PokemonServices } from '../../services';
 import  {IPokemon} from '../../interfaces';
 import { PokemonType } from '../../enum';
-import TalentInput  from '../inputs/talent.input';
 import PokemonInput from '../inputs/pokemon.input'
+import { IPokemonDocument } from '../../models';
 
 const addPokemonMutation = mutationWithClientMutationId({
     name: 'AddPokemon',
@@ -43,7 +43,7 @@ const addPokemonMutation = mutationWithClientMutationId({
              type: GraphQLString,
            },
            talents: {
-             type: new GraphQLList(TalentInput),
+             type: new GraphQLList(GraphQLString),
            },
            abilities: {
              type: new GraphQLList(AbilityInput),
@@ -64,32 +64,10 @@ const addPokemonMutation = mutationWithClientMutationId({
         }
     },
     mutateAndGetPayload: async (input) => {
-      console.log({ input });
-      try {
-        const pokemonServices = new PokemonServices();
-        const pokemon: IPokemon = { 
-            name: input.name,
-            pokenum: input.pokenum,
-            height: input.height,
-            weight: input.weight,
-            color: input.color,
-            type: input.type,
-            description: input.description,
-            // talents: input.talents,
-            // evolutions: input.evolutions,
-            // abilities: input.abilities,
-            sprite: input.sprite //"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png"
-        };
-        const insert = await pokemonServices.insert(pokemon);
-        return { pokemon };
-    }
-    catch (error) {
-        console.error(error);
-        return {
-            pokemon: null,
-        };
-    }
-  
+        const pokemonServices = new PokemonServices();        
+        const insert = await pokemonServices.insert(input);
+        const pokemon = insert.message as IPokemonDocument;
+        return {pokemon};  
     },
   });
   

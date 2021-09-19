@@ -45,7 +45,7 @@ let PokemonInput :GraphQLInputType = new GraphQLInputObjectType({
       type: GraphQLString,
     },*/
     talents: {
-      type: new GraphQLList(TalentInput),
+      type: new GraphQLList(GraphQLString),
     },
     abilities: {
       type: new GraphQLList(AbilityInput),

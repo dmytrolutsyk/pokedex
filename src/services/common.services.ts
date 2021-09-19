@@ -6,7 +6,7 @@ import { APIError, BaseError, Result } from '../utils';
 export abstract class CommonServices<Type extends Document, Data extends Object> {
     protected readonly name: string;
     protected readonly toPopulate: string[];
-    
+
     constructor(name: string, toPopulate: string[] = []){
         this.name = name;
         this.toPopulate = toPopulate;
@@ -14,8 +14,8 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
         this.getName = this.getName.bind(this);
         this.getModel = this.getModel.bind(this);
         this.getToPopulate = this.getToPopulate.bind(this);
-        this.isToBePopulated = this.isToBePopulated.bind(this);
-        // this.populate = this.populate.bind(this);
+        // this.isToBePopulated = this.isToBePopulated.bind(this);
+        this.populate = this.populate.bind(this);
 
         this.getAll = this.getAll.bind(this);
         this.getAllByField = this.getAllByField.bind(this);
@@ -32,7 +32,7 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
 
     public getToPopulate(): string[] { return this.toPopulate; }
    
-    public isToBePopulated(): boolean { return this.toPopulate.length != 0; }
+    // public isToBePopulated(): boolean { return this.toPopulate.length != 0; }
 
     public async getAll(): Promise<Result<Type[]>>{
         const log = `${this.getName()} :: getAll`;
@@ -43,10 +43,10 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
         try {
             let array: Type[]; 
 
-            if (!this.isToBePopulated())
-                array = await this.getModel().find() as Type[];
-            else 
-                array = await this.getModel().find().populate(this.toPopulate) as Type[];
+            // if (!this.isToBePopulated())
+            //     array = await this.getModel().find() as Type[];
+            // else 
+            array = await this.getModel().find().populate(this.toPopulate) as Type[];
             result = new Result<Type[]>(array);
         }
         catch(error) {
@@ -68,7 +68,7 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
             let object = await this.getModel().findById(id) as Type;
             if(!object) throw new Error('BAD REQUEST : Object not found');
 
-            // object = await this.populate(object);
+            object = await this.populate(object);
 
             result = new Result<Type>(object);
         }
@@ -89,8 +89,10 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
             const json = `{"${field}": "${value}"}`;
             let object = await this.getModel().findOne(JSON.parse(json)) as Type;
             // if(!object) throw new Error('BAD REQUEST : Object not found');
-            console.log({ object });
-            // object = await this.populate(object);
+            console.log({object});
+            object = await this.populate(object);
+            console.log({object});
+
             result = new Result<Type>(object);
         }
         catch(error) {
@@ -103,14 +105,14 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
 
     public async insert(data: Data): Promise<Result<Type>> {
         const log = `${this.getName()} :: insert`;
-        // console.log(`${log} :: object = `, data);
+        console.log(`${log} :: object = `, data);
 
         let result: Result<Type>;
         try {
             let object: Type = await this.getModel().create(data) as Type;
             if(!object) throw new Error('ERROR : Could not create object');
-            // code: 11000 : duplicate key : Talent already exists
-            // object = await this.populate(object);
+
+            object = await this.populate(object);
 
             result = new Result<Type>(object);
         } 
@@ -131,7 +133,7 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
             let object = await this.getModel().findByIdAndUpdate(id, data as any, { useFindAndModify: false, new: true }) as Type;
             if (!object) throw new Error('BAD REQUEST : Object not found');
 
-            // object = await this.populate(object);
+            object = await this.populate(object);
 
             result = new Result<Type>(object);
         }
@@ -164,12 +166,12 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
         return result;
     }
 
-    // public async populate(object: Type): Promise<Type> {
-    //     for await (const field of this.toPopulate) {
-    //         object = await object.populate(field).execPopulate() as Type;
-    //     };
-    //     return object;
-    // }
+    public async populate(object: Type): Promise<Type> {
+        for await (const field of this.toPopulate) {
+            object = await object.populate(field).execPopulate();
+        };
+        return object;
+    }
 
     public async getAllByField(field: string, value: string): Promise<Result<Type[]>>{
         const log = `${this.getName()} :: getAllByField`;
@@ -180,10 +182,10 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
             let objects: Type[]; 
             const json = `{"${field}": "${value}"}`;
 
-            if (!this.isToBePopulated())
-                objects = await this.getModel().find(JSON.parse(json)) as Type[];
-            else 
-                objects = await this.getModel().find(JSON.parse(json)).populate(this.toPopulate) as Type[];
+            // if (!this.isToBePopulated())
+            //     objects = await this.getModel().find(JSON.parse(json)) as Type[];
+            // else 
+            objects = await this.getModel().find(JSON.parse(json)).populate(this.toPopulate) as Type[];
             result = new Result<Type[]>(objects);
         }
         catch(error) {

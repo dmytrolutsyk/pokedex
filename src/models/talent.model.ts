@@ -15,7 +15,6 @@ export const TalentSchema = new Schema({
     },
     description: {
         type: String,
-        // required: true,
     }
 }, {
     versionKey: false,

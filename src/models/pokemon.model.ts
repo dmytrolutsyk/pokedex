@@ -1,6 +1,6 @@
 /** Modèle pour la classe Pokemon */
 
-import { model, Schema, Document } from 'mongoose';
+import { model, Schema, Document, Types } from 'mongoose';
 
 import { IPokemon } from '../interfaces';
 import { PokemonType } from '../enum';
@@ -35,21 +35,30 @@ export const PokemonSchema = new Schema({
         type: String, 
         required: false
     },
-    talents: {
-        type: [String],
-        required: false,
-        default: []
-    },
-    abilities: {
-        type: [String],
-        required: false,
-        default: []
-    },
-    evolutions: {
-        type: [String],
-        required: false,
-        default: []
-    }, 
+    talents: [
+        {
+            type: Types.ObjectId,
+            required: false,
+            default: [],
+            ref: 'Talent',
+        }
+    ],
+    abilities: [
+        {
+            type: Types.ObjectId,
+            required: false,
+            default: [],
+            ref: 'Ability',
+        }
+    ],
+    evolutions:[ 
+        {   
+            type: Types.ObjectId,
+            required: false,
+            default: [],
+            ref: 'Pokemon'
+        }
+    ], 
     description: {
         type: String,
         required: false
@@ -67,4 +76,4 @@ export const PokemonSchema = new Schema({
     timestamps: true
 });
 
-export const PokemonModel = model('Pokemon',PokemonSchema);
+export const PokemonModel = model<IPokemonDocument>('Pokemon', PokemonSchema);

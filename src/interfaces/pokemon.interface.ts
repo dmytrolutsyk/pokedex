@@ -1,4 +1,5 @@
 import { PokemonType } from '../enum';
+import { ITalentDocument } from '../models';
 
 export interface IPokemon {
     _id?: String,
@@ -13,7 +14,7 @@ export interface IPokemon {
     description?: String,
     // trainer: TrainerType,
     locations?: String[],   // Location[]
-    talents?: String[],     // Talent[]
+    talents?: String[] | ITalentDocument[],     // Talent[]
     ablities?: String[],    // Ability[]
     evolutions?: String[]   // Pokemon[]
 }
