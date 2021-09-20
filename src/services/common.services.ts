@@ -63,7 +63,7 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
         
         let result: Result<Type>;
         try {
-            if(!Types.ObjectId.isValid(id)) throw new Error('BAD REQUEST : Id not valid');
+            //if(!Types.ObjectId.isValid(id)) throw new Error('BAD REQUEST : Id not valid');
 
             let object = await this.getModel().findById(id) as Type;
             if(!object) throw new Error('BAD REQUEST : Object not found');
@@ -144,13 +144,13 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
         return result;
     }
     
-    public async remove(id: string): Promise<Result<String>> {
+    public async remove(id: string): Promise<String> {
         const log = `${this.getName()} :: remove`;
         console.log(`${log} :: id = ${id}`);
         
         let result: Result<String>;
         try {
-            if(!Types.ObjectId.isValid(id)) throw new Error('BAD REQUEST : Id not valid');
+            //if(!Types.ObjectId.isValid(id)) throw new Error('BAD REQUEST : Id not valid');
 
             const deleted = await this.getModel().findByIdAndDelete(id) != null;
             if(!deleted) throw new Error('BAD REQUEST : Object not found');
@@ -162,7 +162,7 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
             const resultError = new APIError('DB_REMOVE_ERROR');
             result = new Result<String>(resultError as BaseError, true);
         }
-        return result;
+        return id;
     }
 
     public async populate(object: Type): Promise<Type> {
