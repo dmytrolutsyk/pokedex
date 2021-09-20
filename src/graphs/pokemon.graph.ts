@@ -65,10 +65,10 @@ export let PokemonGraph: GraphQLObjectType = new GraphQLObjectType({
         const evolutions: IPokemonDocument[] = [];        
         for await (let number of pokenums) {
           const fetchPokemon = await pokemonServices.getByField('pokenum', number as string)
-          if (fetchPokemon) console.error(fetchPokemon);
-          const evolution = fetchPokemon.message as IPokemonDocument;
-          if (evolution != null) evolutions.push(evolution);
-          evolutions.push(evolution);
+          if (!fetchPokemon.error) {
+            const evolution = fetchPokemon.message as IPokemonDocument;
+            if (evolution != null) evolutions.push(evolution);
+          }
         }
         return evolutions;
       }
