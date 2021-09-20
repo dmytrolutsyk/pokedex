@@ -67,7 +67,7 @@ export let PokemonGraph: GraphQLObjectType = new GraphQLObjectType({
           const fetchPokemon = await pokemonServices.getByField('pokenum', number as string)
           if (fetchPokemon) console.error(fetchPokemon);
           const evolution = fetchPokemon.message as IPokemonDocument;
-          console.log({evolution});
+          if (evolution != null) evolutions.push(evolution);
           evolutions.push(evolution);
         }
         return evolutions;
@@ -91,7 +91,7 @@ export let PokemonGraph: GraphQLObjectType = new GraphQLObjectType({
     species: {
       type: GraphQLString,
       resolve: async (obj) => {
-        if (obj?.description != null) return obj.description;
+        if (obj?.species != null) return obj.species;
         const fetch = await pokeapiServices.pokemonDetails(obj?.pokenum);
         if (fetch.error) return null
         return (fetch.message as IPokemonDetails).species;

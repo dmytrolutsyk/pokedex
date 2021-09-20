@@ -110,7 +110,6 @@ export class SyncServices {
             }
             pokemon.moves = moves;
 
-
             const insert = await this.pokemonServices.insert(pokemon);
             if (insert.error) throw new Error(((fetch.message) as BaseError).name);
             
