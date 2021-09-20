@@ -80,35 +80,27 @@ export class SyncServices {
             pokemon.description = details.description;
             pokemon.species = details.species;
 
-            // const fetchEvolution = await this.pokeapiServices.evolutions(details.evolution_chain as string);
-            // if (fetchEvolution.error) throw new Error(((fetchEvolution.message) as BaseError).name);
-
-            // const evolutions: String[] = [];
-            // for (const number in  fetchEvolution.message as string[]) {
-            //     const fetchPokemon = await this.pokemonServices.getByField('pokenum', number)
-            //     if (fetchPokemon) console.error(fetchPokemon);
-            //     const evolution = fetchPokemon.message as IPokemonDocument;
-            //     evolutions.push(evolution._id);
-            // }
-            // pokemon.evolutions = evolutions;
-
-            const talents: ITalentDocument[] = [];
-            for (const number in pokemon.talents) {
+            const talentIds: string[] = [];
+            const talentNums = pokemon.talents as string[];
+            for (let number of talentNums) {
                 const fetchTalent = await this.talentServices.getByField('number', number);
-                if (fetchTalent) console.error(fetchTalent);
-                const talent = fetchTalent.message as ITalentDocument;
-                talents.push(talent);
+                if (!fetchTalent.error) {
+                    const talent = fetchTalent.message as ITalentDocument;
+                    talentIds.push(talent._id);
+                }
             }
-            pokemon.talents = talents;
+            pokemon.talents = talentIds;
 
-            const moves: IMoveDocument[] = [];
-            for (const number in pokemon.moves) {
+            const moveIds: string[] = [];
+            const moveNums = pokemon.moves as string[];
+            for (let number of moveNums) {
                 const fetchMove = await this.moveServices.getByField('number', number);
-                if (fetchMove) console.error(fetchMove);
-                const move = fetchMove.message as IMoveDocument;
-                moves.push(move);
+                if (!fetchMove.error) {
+                    const move = fetchMove.message as IMoveDocument;
+                    moveIds.push(move._id);
+                }
             }
-            pokemon.moves = moves;
+            pokemon.moves = moveIds;
 
             const insert = await this.pokemonServices.insert(pokemon);
             if (insert.error) throw new Error(((fetch.message) as BaseError).name);

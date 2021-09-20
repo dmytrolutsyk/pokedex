@@ -89,9 +89,8 @@ export abstract class CommonServices<Type extends Document, Data extends Object>
             const json = `{"${field}": "${value}"}`;
             let object = await this.getModel().findOne(JSON.parse(json)) as Type;
             // if(!object) throw new Error('BAD REQUEST : Object not found');
-            console.log({object});
+
             object = await this.populate(object);
-            console.log({object});
 
             result = new Result<Type>(object);
         }

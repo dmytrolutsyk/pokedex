@@ -61,9 +61,6 @@ export class PokeapiServices {
             const { data } = await axios.get(`${this.url}/api/v2/pokemon/${id}`);
             //TODO: handle error
             
-            // const talentsIds: String[] = data?.abilities?.map((_: any) => { this.idFromUrl(_.ability?.url).toLocaleString(); });
-            // const movesIds: String[] = data?.moves?.map((_: any) => { this.idFromUrl(_.move?.url).toLocaleString(); });
-
             const pokemon: IPokemon = {
                 pokenum: data?.id,
                 height: data?.height * 10,
@@ -71,10 +68,9 @@ export class PokeapiServices {
                 spriteSmall: data?.sprites?.front_default,
                 sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
                 type: data?.types?.map((_: any) => (_?.type?.name as String)?.toUpperCase()),
-                talents: data?.abilities?.map((_: any) => { this.idFromUrl(_.ability?.url).toLocaleString(); }),
-                moves: data?.moves?.map((_: any) => { this.idFromUrl(_.move?.url).toLocaleString(); }),
+                talents: data?.abilities?.map((_: any) => this.idFromUrl(_.ability?.url).toLocaleString()),
+                moves: data?.moves?.map((_: any) => this.idFromUrl(_.move?.url).toLocaleString()),
             }
-
             //TODO: handle error
 
             result = new Result<IPokemon>(pokemon);
