@@ -115,13 +115,11 @@ extend type Mutation {
   Update an existing pokemon.
   """
   updatePokemon(
-    _id: ID,
-    name: String!,
-    pokenum: Int,
+    _id: ID!,
+    name: String,
     height: Int,
     weight: Float,
     color: String,
-    talents: [Talent],
     description: String,
     sprite: String,
     spriteSmall: String

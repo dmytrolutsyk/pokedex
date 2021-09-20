@@ -1,16 +1,7 @@
-import {
-    GraphQLInputObjectType,
-    GraphQLID,
-    GraphQLInt,
-    GraphQLString,
-    GraphQLInputType,
-    GraphQLFloat,
-    GraphQLList
-  } from 'graphql';
+import { GraphQLInputObjectType, GraphQLID, GraphQLInt, GraphQLString, GraphQLInputType, GraphQLFloat, GraphQLList } from 'graphql';
 
 import PokemonTypeGraph from '../../graphs/pokemon.type.graph'
 import MoveInput from './move.input';
-import TalentInput from './talent.input';
 
 
 let PokemonInput :GraphQLInputType = new GraphQLInputObjectType({
@@ -26,10 +17,6 @@ let PokemonInput :GraphQLInputType = new GraphQLInputObjectType({
       type: GraphQLString,
     },
     type: {
-      // type: new GraphQLList(PokemonTypeGraph),
-      // resolve: obj => {
-      //       return obj.PokeType;
-      // }
       type: new GraphQLList(PokemonTypeGraph),
     },
     height: {
