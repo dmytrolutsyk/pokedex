@@ -19,8 +19,6 @@ export class PokeapiServices {
         this.move = this.move.bind(this);
     };
 
-
-
     public async pokemonDetails(id: number): Promise<Result<IPokemonDetails>> {
         const log = `${this.name} :: pokemonDetails`;
         console.log(`${log} :: id = ${id}`);

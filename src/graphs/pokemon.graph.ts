@@ -52,7 +52,7 @@ export let PokemonGraph: GraphQLObjectType = new GraphQLObjectType({
     evolutions: {
       type: new GraphQLList(PokemonGraph),
       resolve: async (obj) => {
-        if (obj?.evolutions.lenth > 0) return obj.evolutions;
+        if (obj?.evolutions?.lenth > 0) return obj.evolutions;
 
         const fetch = await pokeapiServices.pokemonDetails(obj?.pokenum);
         if (fetch.error) return null

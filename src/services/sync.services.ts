@@ -80,17 +80,17 @@ export class SyncServices {
             pokemon.description = details.description;
             pokemon.species = details.species;
 
-            const fetchEvolution = await this.pokeapiServices.evolutions(details.evolution_chain as string);
-            if (fetchEvolution.error) throw new Error(((fetchEvolution.message) as BaseError).name);
+            // const fetchEvolution = await this.pokeapiServices.evolutions(details.evolution_chain as string);
+            // if (fetchEvolution.error) throw new Error(((fetchEvolution.message) as BaseError).name);
 
-            const evolutions: String[] = [];
-            for (const number in  fetchEvolution.message as string[]) {
-                const fetchPokemon = await this.pokemonServices.getByField('pokenum', number)
-                if (fetchPokemon) console.error(fetchPokemon);
-                const evolution = fetchPokemon.message as IPokemonDocument;
-                evolutions.push(evolution._id);
-            }
-            pokemon.evolutions = evolutions;
+            // const evolutions: String[] = [];
+            // for (const number in  fetchEvolution.message as string[]) {
+            //     const fetchPokemon = await this.pokemonServices.getByField('pokenum', number)
+            //     if (fetchPokemon) console.error(fetchPokemon);
+            //     const evolution = fetchPokemon.message as IPokemonDocument;
+            //     evolutions.push(evolution._id);
+            // }
+            // pokemon.evolutions = evolutions;
 
             const talents: ITalentDocument[] = [];
             for (const number in pokemon.talents) {

@@ -51,14 +51,14 @@ export const PokemonSchema = new Schema({
             ref: 'Move',
         }
     ],
-    evolutions:[ 
-        {   
-            type: Types.ObjectId,
-            required: false,
-            default: [],
-            ref: 'Pokemon'
-        }
-    ], 
+    // evolutions:[ 
+    //     {   
+    //         type: Types.ObjectId,
+    //         required: false,
+    //         default: [],
+    //         ref: 'Pokemon'
+    //     }
+    // ], 
     description: {
         type: String,
         required: false

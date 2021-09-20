@@ -14,5 +14,5 @@ export interface IPokemon {
     description?: String,
     talents?: String[] | ITalentDocument[],
     moves?: String[] | IMoveDocument[],
-    evolutions?: String[]   // Pokemon[]
+    // evolutions?: String[]   // Pokemon[]
 }
