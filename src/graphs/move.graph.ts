@@ -7,7 +7,7 @@ import MoveTypeGraph from './move.types.graph';
 export const MoveGraph = new GraphQLObjectType({
   name: 'Move',
   fields: {
-    id: {
+    _id: {
       type: GraphQLID
     },
     name: {

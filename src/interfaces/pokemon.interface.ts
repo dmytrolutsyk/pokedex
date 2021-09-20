@@ -10,6 +10,7 @@ export interface IPokemon {
     weight?: Number,
     color?: String,
     species?: String,
+    spriteSmall?: String,
     sprite?: String,
     description?: String,
     talents?: String[] | ITalentDocument[],

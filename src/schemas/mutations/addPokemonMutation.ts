@@ -48,6 +48,9 @@ const addPokemonMutation = mutationWithClientMutationId({
       },
       sprite: {
         type: GraphQLString,
+      },
+      spriteSmall: {
+        type: GraphQLString,
       }
     },
     outputFields: {

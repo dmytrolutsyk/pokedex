@@ -55,6 +55,9 @@ let PokemonInput :GraphQLInputType = new GraphQLInputObjectType({
     },
     sprite: {
       type: GraphQLString,
+    },
+    spriteSmall: {
+      type: GraphQLString,
     }
   })
 });

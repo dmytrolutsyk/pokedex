@@ -51,17 +51,17 @@ export class DatabaseConfig {
         try {
             const fetchTalents = await talentServices.getAll();
             if (fetchTalents.error || (fetchTalents.message as mongoose.Document[])?.length < 150) {
-                await syncServices.syncTalents(1, 327);
+                await syncServices.syncTalents(1, 267);
             }
 
             const fetchMoves = await moveServices.getAll();
             if (fetchMoves.error || (fetchMoves.message as mongoose.Document[])?.length < 150) {
-                await syncServices.syncMoves(1, 844);
+                await syncServices.syncMoves(1, 826);
             }
 
             const fetchPokemons = await pokemonServices.getAll();
             if (fetchPokemons.error || (fetchPokemons.message as mongoose.Document[])?.length < 150) {
-                await syncServices.syncPokemons(1, 150);
+                await syncServices.syncPokemons(1, 151);
             }
 
             console.log(`Database initiated`);

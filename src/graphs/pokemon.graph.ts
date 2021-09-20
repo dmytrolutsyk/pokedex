@@ -82,6 +82,9 @@ export let PokemonGraph: GraphQLObjectType = new GraphQLObjectType({
         return (fetch.message as IPokemonDetails).description;
       }
     },
+    spriteSmall: {
+      type: GraphQLString,
+    },
     sprite: {
       type: GraphQLString,
     },
