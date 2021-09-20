@@ -2,7 +2,8 @@
 import { GraphQLObjectType } from 'graphql';
 
 import addPokemonMutation from '../mutations/addPokemonMutation';
-import modifyPokemonMutation from '../mutations/modify.Polemon.mutation';
+import modifyPokemonMutation from '../mutations/modify.Pokemon.mutation';
+import deletePokemonMutation from '../mutations/delete.Pokemon.mutation';
 
 
 export default new GraphQLObjectType({
@@ -10,5 +11,6 @@ export default new GraphQLObjectType({
   fields: {
     addPokemon: addPokemonMutation,
     modifyPokemon: modifyPokemonMutation,
+    deletePokemon: deletePokemonMutation
   },
 });

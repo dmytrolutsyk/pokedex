@@ -6,9 +6,9 @@ import { PokemonGraph } from '../../graphs';
 import { PokemonServices } from '../../services';
 
 
-const modifyPokemonMutation = mutationWithClientMutationId({
-    name: 'ModifyPokemon',
-    description: 'Modify a pokemon',
+const deletePokemonMutation = mutationWithClientMutationId({
+    name: 'DeletePokemon',
+    description: 'Delete a pokemon',
     inputFields: {
         _id: {
             type: GraphQLString!
@@ -27,4 +27,4 @@ const modifyPokemonMutation = mutationWithClientMutationId({
     },
   });
   
-  export default modifyPokemonMutation;
+  export default deletePokemonMutation;
