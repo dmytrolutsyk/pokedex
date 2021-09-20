@@ -69,7 +69,7 @@ export class PokeapiServices {
                 height: data?.height * 10,
                 weight: data?.weight * 0.10,
                 spriteSmall: data?.sprites?.front_default,
-                sprite: data?.sprites?.other?.dream_world?.front_default,
+                sprite: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
                 type: data?.types?.map((_: any) => (_?.type?.name as String)?.toUpperCase()),
                 talents: data?.abilities?.map((_: any) => { this.idFromUrl(_.ability?.url).toLocaleString(); }),
                 moves: data?.moves?.map((_: any) => { this.idFromUrl(_.move?.url).toLocaleString(); }),
