@@ -126,6 +126,15 @@ extend type Mutation {
   ): Pokemon
 }
 
+extend type Mutation {
+  """
+  Delete an existing pokemon.
+  """
+  deletePokemon(
+    deletedCharacterId: ID!,
+  ): Pokemon
+}
+
 input PokemonInput {
   _id: ID,
   name: String!
@@ -156,4 +165,11 @@ input MoveInput {
   precision: Float,
   powerPoint: Int,
   target: Int
+}
+
+input DeletePokemonInput {
+  """
+  The ID of a `Pokemon` to delete.
+  """
+  deletedCharacterId: ID!
 }
